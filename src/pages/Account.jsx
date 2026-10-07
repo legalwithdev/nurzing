@@ -48,8 +48,7 @@ export default function Account() {
       </div>
 
       <p className="muted" style={{ fontSize: '.76rem', marginTop: 20, lineHeight: 1.6 }}>
-        NURZING is a nursing bureau and placement service. Rates shown are indicative and confirmed by your care advisor before care begins.
-        This is a demo build — data is stored only in your browser.
+        DEMO BUILD: every professional, rating, review and verification badge in this app is sample data and must be replaced with verified, real information before launch. NURZING is a nursing bureau and placement service. Rates shown are indicative and confirmed by your care advisor before care begins. This build stores data only in your browser.
       </p>
     </div>
   );

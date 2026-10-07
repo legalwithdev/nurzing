@@ -6,6 +6,7 @@ function Shell() {
   const { toastMsg } = useBookings();
   return (
     <div className="app">
+      <div className="demo-strip">DEMO — sample professionals &amp; reviews. Replace with your real data before launch.</div>
       <header className="topbar">
         <div className="topbar-inner">
           <NavLink to="/" className="brand">

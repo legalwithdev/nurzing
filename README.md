@@ -32,6 +32,15 @@ This repo is ready for Cloudflare Pages:
 - **Saved** (`/saved`) — shortlisted professionals
 - **Account** (`/account`) — profile and preferences
 
+## Replace before launch
+This is a demo build. Before going live, replace the placeholder content with verified, real information:
+- **Landing page** (`public/landing.html`) — every bracketed `[placeholder]`, and any verification / insurance claim.
+- **Sample professionals** (`src/data/nurses.js`) — the 12 nurses, their ratings, review counts and reviews are invented.
+- **Verification badges** on profiles — only show checks you genuinely perform.
+- **Contact details** — phone and email are placeholders.
+
+Do not publish invented testimonials or unverified claims (misleading-advertising / consumer-protection risk in India).
+
 ## Data layer
 Seed data lives in `src/data/nurses.js`. Bookings and saved items are stored in the browser.
 To move to a real backend (e.g. a Cloudflare Worker + D1/KV), swap the functions in

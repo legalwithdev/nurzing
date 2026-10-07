@@ -30,7 +30,7 @@ h1{font-size:1.7rem} h2{font-size:1.35rem} h3{font-size:1.1rem}
 /* ---------- APP SHELL ---------- */
 .app{min-height:100%;display:flex;flex-direction:column}
 .topbar{
-  position:fixed;top:0;left:0;right:0;z-index:900;height:var(--topbar-h);
+  position:fixed;top:30px;left:0;right:0;z-index:900;height:var(--topbar-h);
   background:rgba(251,248,241,.86);backdrop-filter:blur(18px) saturate(140%);
   border-bottom:1px solid var(--line-2);display:flex;align-items:center;
 }
@@ -42,7 +42,9 @@ h1{font-size:1.7rem} h2{font-size:1.35rem} h3{font-size:1.1rem}
 .icon-btn{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;border:1px solid var(--line);color:var(--teal-800);background:rgba(255,255,255,.5);transition:.25s}
 .icon-btn:hover{background:var(--teal-950);color:var(--gold-300);border-color:var(--teal-950)}
 .icon-btn .badge{position:absolute;transform:translate(14px,-14px);background:var(--gold-400);color:var(--teal-950);font-size:.6rem;font-weight:700;border-radius:999px;padding:1px 5px;min-width:16px;text-align:center}
-.screen{width:100%;max-width:1080px;margin:0 auto;padding:calc(var(--topbar-h) + 16px) 16px calc(var(--dock-h) + 34px);flex:1}
+.screen{width:100%;max-width:1080px;margin:0 auto;padding:calc(var(--topbar-h) + 46px) 16px calc(var(--dock-h) + 34px);flex:1}
+
+.demo-strip{position:fixed;top:0;left:0;right:0;z-index:1000;background:#8A2B2B;color:#fff;font-size:.68rem;font-weight:600;letter-spacing:.02em;text-align:center;padding:7px 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* dock */
 .dock{

@@ -31,8 +31,10 @@ export default function Discover() {
       <span className="eyebrow">Verified home care</span>
       <h1 style={{ margin: '8px 0 6px' }}>Find care that fits your family</h1>
       <p className="muted" style={{ maxWidth: '40rem' }}>
-        Browse background-verified nurses and attendants, see transparent daily rates, and book in minutes.
+        Browse nurses and attendants, see transparent daily rates, and book in minutes.
       </p>
+
+      <p className="muted" style={{ fontSize: '.78rem', marginTop: 8 }}>Showing sample professionals for demo — replace with your real records before launch.</p>
 
       <div className="searchbar" style={{ marginTop: 18 }}>
         <SearchIcon />

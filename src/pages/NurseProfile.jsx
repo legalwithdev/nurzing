@@ -48,6 +48,7 @@ export default function NurseProfile() {
           {n.verified.insured && <span className="chip"><CheckIcon size={13} /> Insured</span>}
           {n.verified.vaccinated && <span className="chip"><CheckIcon size={13} /> Vaccinated</span>}
         </div>
+        <p className="muted" style={{ fontSize: '.74rem', marginTop: 10 }}>Demo verification badges — replace with your real, verifiable checks.</p>
       </div>
 
       <div className="section-title"><h2>About</h2></div>
@@ -62,6 +63,7 @@ export default function NurseProfile() {
       </div>
 
       <div className="section-title"><h2>Reviews</h2><span className="link">{n.reviews} total</span></div>
+      <p className="muted" style={{ fontSize: '.74rem', margin: '-6px 0 10px' }}>Sample reviews for demo — replace with real, consented reviews.</p>
       <div className="card" style={{ padding: '4px 20px' }}>
         {n.reviewsList.map((r, i) => (
           <div className="review" key={i}>
