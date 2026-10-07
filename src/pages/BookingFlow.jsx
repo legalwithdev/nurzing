@@ -117,12 +117,12 @@ export default function BookingFlow() {
 
       <div className="summary" style={{ marginTop: 16 }}>
         <div className="lab">Live estimate</div>
-        <div className="big">{inr(q.total)} <small>{q.unit === 'visit' ? 'per visit' : `for ${q.days} day${q.days > 1 ? 's' : ''}`}</small></div>
+        <div className="big">[&#8377;0,000] <small>{q.unit === 'visit' ? 'per visit' : `for ${q.days} day${q.days > 1 ? 's' : ''}`}</small></div>
         <div className="rows">
           <div className="row"><span>Professional</span><b>{n.name}</b></div>
           <div className="row"><span>Care type</span><b>{care}</b></div>
           <div className="row"><span>Shift</span><b>{q.shift.label}</b></div>
-          <div className="row"><span>Rate</span><b>{inr(q.per)} {q.unit === 'visit' ? '/visit' : '/day'}</b></div>
+          <div className="row"><span>Rate</span><b>[&#8377;0,000] {q.unit === 'visit' ? '/visit' : '/day'}</b></div>
         </div>
       </div>
 

@@ -1,3 +1,5 @@
+// SAMPLE DATA ONLY — every name, role, rating, review, distance and rate below is invented
+// for demo purposes. Replace with your real, verified professional records before launch.
 export const CITIES = ['Bengaluru', 'Mumbai', 'Delhi NCR', 'Pune', 'Hyderabad', 'Chennai'];
 
 const V = (extra = {}) => ({ id: true, police: true, insured: true, vaccinated: true, ...extra });

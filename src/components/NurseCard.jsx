@@ -35,7 +35,7 @@ export default function NurseCard({ nurse }) {
         <PinIcon size={14} /> {nurse.area}, {nurse.city} &middot; {nurse.distanceKm} km
       </div>
       <div className="nc-foot">
-        <div className="price">{inr(nurse.rate)}<small> /day</small></div>
+        <div className="price">[&#8377;0,000]<small> /day</small></div>
         <Link to={`/book/${nurse.id}`} className="btn btn-gold">Book <span aria-hidden="true">&rarr;</span></Link>
       </div>
     </article>

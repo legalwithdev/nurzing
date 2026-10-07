@@ -80,7 +80,7 @@ export default function NurseProfile() {
       <div className="sticky-cta">
         <div className="card" style={{ padding: 14, display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{ flex: 1 }}>
-            <div className="price">{inr(n.rate)}<small> /day</small></div>
+            <div className="price">[&#8377;0,000]<small> /day</small></div>
             <div className="muted" style={{ fontSize: '.76rem' }}>Transparent &middot; no hidden charges</div>
           </div>
           <Link to={`/book/${n.id}`} className="btn btn-gold btn-lg">Book now</Link>

@@ -468,7 +468,7 @@ footer{background:var(--teal-1000);color:var(--teal-200);padding:80px 0 150px;ma
       </div>
       <div class="hero-trust">
         <span class="t"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.4 8.6 8 11 4.6-2.4 8-6 8-11V5l-8-3Z" stroke="#2E8A7E" stroke-width="1.5"/><path d="m9 12 2 2 4-4" stroke="#C69C42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> [Your verification process]</span>
-        <span class="t"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.3-7-10a7 7 0 0 1 14 0c0 5.7-7 10-7 10Z" stroke="#2E8A7E" stroke-width="1.5"/><circle cx="12" cy="11" r="2.4" stroke="#C69C42" stroke-width="1.6"/></svg> Live-in &amp; 24×7 shifts</span>
+        <span class="t"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.3-7-10a7 7 0 0 1 14 0c0 5.7-7 10-7 10Z" stroke="#2E8A7E" stroke-width="1.5"/><circle cx="12" cy="11" r="2.4" stroke="#C69C42" stroke-width="1.6"/></svg> [Shift options — list yours]</span>
         <span class="t"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#2E8A7E" stroke-width="1.5"/><path d="M12 7v5l3 2" stroke="#C69C42" stroke-width="1.7" stroke-linecap="round"/></svg> [Your typical placement time]</span>
       </div>
     </div>
@@ -626,7 +626,7 @@ footer{background:var(--teal-1000);color:var(--teal-200);padding:80px 0 150px;ma
       <aside class="estimate" id="estimate">
         <div class="lab">Your live estimate</div>
         <div id="estBody">
-          <div class="empty">Pick a care type to see an indicative price range. No hidden charges — ever.</div>
+          <div class="empty">Pick a care type to see an indicative price range. [Add your real rates here.]</div>
         </div>
         <ul>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="#D9B761" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Verified professional [describe your checks]</li>
@@ -855,13 +855,13 @@ footer{background:var(--teal-1000);color:var(--teal-200);padding:80px 0 150px;ma
 <script>
 /* ---------- data ---------- */
 const SERVICES = [
-  {n:"Home Nursing", price:"1,400", per:"per 12-hr day", desc:"Skilled nurses for medication management, wound care, injections, vitals monitoring and general clinical support at home.", tags:["Medication & IV","Wound dressing","Vitals monitoring","Doctor coordination"]},
-  {n:"Live-in Nursing (24×7)", price:"2,600", per:"per day", desc:"Round-the-clock nursing for post-operative, critically-stable or high-dependency patients who need constant attention.", tags:["24-hour cover","Night care","Emergency-ready","Live-in"]},
-  {n:"Elderly Care & Attendants", price:"900", per:"per 12-hr day", desc:"Compassionate daily-living support — mobility, hygiene, feeding, companionship and safety supervision for seniors.", tags:["Mobility support","Hygiene & feeding","Companionship","Fall prevention"]},
-  {n:"Post-Surgical Recovery", price:"1,600", per:"per 12-hr day", desc:"Structured recovery care after surgery — dressing, drain care, physiotherapy coordination and nutrition guidance.", tags:["Drain & dressing","Pain monitoring","Recovery plan","Physio liaison"]},
-  {n:"Mother & Baby Care", price:"1,800", per:"per 12-hr day", desc:"Trained maternity nurses for new mothers and newborns — feeding support, newborn hygiene, sleep routines and post-partum care.", tags:["Newborn care","Lactation support","Post-partum care","Night duty"]},
-  {n:"Physiotherapy at Home", price:"600", per:"per session", desc:"Licensed physiotherapists for post-surgery rehab, stroke recovery, pain management and mobility restoration at home.", tags:["Rehab plans","Pain relief","Stroke recovery","Mobility"]},
-  {n:"ICU-Trained Nurses", price:"2,200", per:"per 12-hr day", desc:"Critical-care certified nurses for ventilator, tracheostomy, catheter and complex-monitoring cases, supported at home.", tags:["Ventilator care","Tracheostomy","Catheter care","Critical monitoring"]},
+  {n:"Home Nursing", price:"[0,000]", per:"per 12-hr day", desc:"Skilled nurses for medication management, wound care, injections, vitals monitoring and general clinical support at home.", tags:["Medication & IV","Wound dressing","Vitals monitoring","Doctor coordination"]},
+  {n:"Live-in Nursing (24×7)", price:"[0,000]", per:"per day", desc:"Round-the-clock nursing for post-operative, critically-stable or high-dependency patients who need constant attention.", tags:["24-hour cover","Night care","Emergency-ready","Live-in"]},
+  {n:"Elderly Care & Attendants", price:"[0,000]", per:"per 12-hr day", desc:"Compassionate daily-living support — mobility, hygiene, feeding, companionship and safety supervision for seniors.", tags:["Mobility support","Hygiene & feeding","Companionship","Fall prevention"]},
+  {n:"Post-Surgical Recovery", price:"[0,000]", per:"per 12-hr day", desc:"Structured recovery care after surgery — dressing, drain care, physiotherapy coordination and nutrition guidance.", tags:["Drain & dressing","Pain monitoring","Recovery plan","Physio liaison"]},
+  {n:"Mother & Baby Care", price:"[0,000]", per:"per 12-hr day", desc:"Trained maternity nurses for new mothers and newborns — feeding support, newborn hygiene, sleep routines and post-partum care.", tags:["Newborn care","Lactation support","Post-partum care","Night duty"]},
+  {n:"Physiotherapy at Home", price:"[0,000]", per:"per session", desc:"Licensed physiotherapists for post-surgery rehab, stroke recovery, pain management and mobility restoration at home.", tags:["Rehab plans","Pain relief","Stroke recovery","Mobility"]},
+  {n:"ICU-Trained Nurses", price:"[0,000]", per:"per 12-hr day", desc:"Critical-care certified nurses for ventilator, tracheostomy, catheter and complex-monitoring cases, supported at home.", tags:["Ventilator care","Tracheostomy","Catheter care","Critical monitoring"]},
 ];
 
 const CARE_RATES = {
@@ -957,7 +957,7 @@ document.getElementById('phone').addEventListener('input',e=>e.target.style.bord
 function inr(n){return '\u20B9'+n.toLocaleString('en-IN');}
 function updateEstimate(){
   const box=document.getElementById('estBody');
-  if(!state.care){box.innerHTML='<div class="empty">Pick a care type to see an indicative price range. No hidden charges — ever.</div>';return;}
+  if(!state.care){box.innerHTML='<div class="empty">Pick a care type to see an indicative price range. [Add your real rates here.]</div>';return;}
   const r=CARE_RATES[state.care];
   const days=parseInt(document.getElementById('days').value,10)||1;
   const mult = state.shift==='24-hour live-in' ? 1.15 : 1;
@@ -969,8 +969,8 @@ function updateEstimate(){
     low=Math.round(low); high=Math.round(high);
   }
   box.innerHTML=`
-    <div class="big">${inr(low)} <small>&ndash; ${inr(high)}</small></div>
-    <div class="note">${state.care} &middot; ${suffix}</div>`;
+    <div class="big">[&#8377;0,000] <small>&ndash; [&#8377;0,000]</small></div>
+    <div class="note">${state.care} &middot; ${suffix} &middot; replace with your real rates</div>`;
 }
 
 /* ---------- faq ---------- */

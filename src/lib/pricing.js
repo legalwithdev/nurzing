@@ -1,3 +1,4 @@
+// Pricing below is illustrative only — set your real rates before launch.
 export const CARE_TYPES = ['Home Nursing', 'Elderly Care', 'Post-Surgical', 'Mother & Baby', 'Physiotherapy', 'ICU-trained'];
 
 export const CARE_ICON = {
