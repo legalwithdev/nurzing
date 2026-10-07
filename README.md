@@ -23,6 +23,8 @@ This repo is ready for Cloudflare Pages:
 - Build output directory: `dist`
 - `public/_redirects` already routes all paths to `/index.html` for SPA routing.
 - `wrangler.toml` is included (`pages_build_output_dir = "dist"`).
+- A **pre-built `dist/` is committed** as a fallback: if you don't want a build step, set the Build output
+  directory to `dist` and the committed output will be served as-is.
 
 ## Screens
 - **Discover** (`/`) — search + filters (care type, city, sort) and nurse cards
