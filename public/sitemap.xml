@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://nurzing.pages.dev/landing.html</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://nurzing.pages.dev/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  <url><loc>https://nurzing.pages.dev/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://nurzing.pages.dev/services/home-nursing.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nurzing.pages.dev/services/elderly-care.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nurzing.pages.dev/services/post-surgical-care.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nurzing.pages.dev/services/mother-baby-care.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nurzing.pages.dev/services/physiotherapy.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nurzing.pages.dev/services/icu-nursing.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nurzing.pages.dev/cities/bengaluru.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nurzing.pages.dev/cities/mumbai.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nurzing.pages.dev/cities/delhi-ncr.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nurzing.pages.dev/cities/pune.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nurzing.pages.dev/cities/hyderabad.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nurzing.pages.dev/cities/chennai.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
 </urlset>
