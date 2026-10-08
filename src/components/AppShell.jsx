@@ -1,9 +1,34 @@
-import { Outlet, NavLink } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { BookingsProvider, useBookings } from '../lib/store.jsx';
 import { CompassIcon, CalendarIcon, HeartIcon, UserIcon, PinIcon, CheckIcon } from '../lib/icons.jsx';
 
+const SEO = [
+  ['/nurse/', 'Nurse profile \u2014 NURZING', 'Verified professional: experience, skills and reviews.'],
+  ['/book/', 'Book a nurse \u2014 NURZING', 'Book home nursing care with a transparent, upfront estimate.'],
+  ['/bookings', 'My bookings \u2014 NURZING', 'Track your home care bookings and their live status.'],
+  ['/saved', 'Saved professionals \u2014 NURZING', 'Your shortlist of nurses and attendants.'],
+  ['/account', 'Account \u2014 NURZING', 'Your NURZING profile and care preferences.'],
+];
+
+function useSeo(pathname) {
+  useEffect(() => {
+    let title = 'NURZING \u2014 Book verified nurses at home';
+    let desc = 'Discover nurses and attendants, see transparent pricing, and book home care in minutes.';
+    for (const [prefix, t, d] of SEO) {
+      if (pathname.startsWith(prefix)) { title = t; desc = d; break; }
+    }
+    document.title = title;
+    let m = document.querySelector('meta[name="description"]');
+    if (!m) { m = document.createElement('meta'); m.setAttribute('name', 'description'); document.head.appendChild(m); }
+    m.setAttribute('content', desc);
+  }, [pathname]);
+}
+
 function Shell() {
   const { toastMsg } = useBookings();
+  const { pathname } = useLocation();
+  useSeo(pathname);
   return (
     <div className="app">
       <div className="demo-strip">DEMO — sample professionals &amp; reviews. Replace with your real data before launch.</div>
