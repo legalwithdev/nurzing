@@ -2,6 +2,8 @@
 """Generate static SEO pages (services + cities) and sitemap.xml into public/."""
 import io, os
 
+from guides_content import GUIDES, DISCLAIMER
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 PUB = os.path.join(HERE, 'public')
 BASE = 'https://nurzing.pages.dev'
@@ -62,6 +64,7 @@ PAGE_CSS = """
 .chiprow a{font-size:.82rem;font-weight:600;color:var(--teal-800);background:rgba(10,64,60,.06);border:1px solid var(--line);padding:.5rem .8rem;border-radius:999px}
 .chiprow a:hover{background:var(--teal-950);color:var(--gold-300);border-color:var(--teal-950)}
 .pfoot{border-top:1px solid var(--line);margin-top:40px;padding-top:24px;font-size:.82rem;color:var(--muted)}
+.pwrap ul li a{color:var(--teal-700);text-decoration:underline;text-underline-offset:3px}
 """
 
 def head(title, desc, path, ld=None):
@@ -86,6 +89,7 @@ NAV = ('<header class="pnav"><div class="in">'
        '<a href="/"><b>NURZING</b></a>'
        '<a href="/services/home-nursing.html">Services</a>'
        '<a href="/cities/bengaluru.html">Cities</a>'
+       '<a href="/guides/">Guides</a>'
        '<a class="sp" href="/app/">Open app</a>'
        '</div></header>')
 
@@ -153,6 +157,46 @@ for city in CITIES:
     write(path.lstrip('/'), html)
     urls.append(path)
 
+# ---------------- guide pages ----------------
+for g in GUIDES:
+    path = '/guides/%s.html' % g['slug']
+    ld = ('{"@context":"https://schema.org","@type":"Article","headline":"%s","description":"%s",'
+          '"author":{"@type":"Organization","name":"NURZING"},'
+          '"publisher":{"@type":"Organization","name":"NURZING"},"url":"%s%s"}'
+          % (g['h1'], g['desc'], BASE, path))
+    body = '<h1>%s</h1><p class="lead">%s</p>' % (g['h1'], g['intro'])
+    for h2, blocks in g['sections']:
+        body += '<h2>%s</h2>' % h2
+        for b in blocks:
+            if isinstance(b, list):
+                body += '<ul>' + ''.join('<li>%s</li>' % x for x in b) + '</ul>'
+            else:
+                body += '<p>%s</p>' % b
+    body += '<div class="note">%s</div>' % DISCLAIMER
+    other = ''.join('<a href="/guides/%s.html">%s</a>' % (o['slug'], o['h1']) for o in GUIDES if o['slug'] != g['slug'])
+    html = (head(g['title'], g['desc'], path, ld) + '<body>' + NAV + '<main class="pwrap">'
+            + '<div class="crumbs"><a href="/">Home</a> &rsaquo; <a href="/guides/">Guides</a> &rsaquo; %s</div>' % g['h1']
+            + body
+            + '<div class="pcta"><h2>Need care at home?</h2><p>See matched professionals and a transparent price range in the app.</p><a class="btn btn-gold btn-lg" href="/app/">Open the app &rarr;</a></div>'
+            + '<h2>More guides</h2><div class="chiprow">' + other + '</div>'
+            + '</main>' + foot('<a href="/">NURZING home</a>') + '</body></html>')
+    write(path.lstrip('/'), html)
+    urls.append(path)
+
+# guides index
+glist = ''.join('<li><a href="/guides/%s.html">%s</a></li>' % (g['slug'], g['h1']) for g in GUIDES)
+idx_ld = ('{"@context":"https://schema.org","@type":"CollectionPage",'
+          '"name":"NURZING guides","url":"%s/guides/"}' % BASE)
+write('guides/index.html', head('Guides for Families Planning Care at Home | NURZING',
+      'Practical guides on choosing a home nurse, post-surgery recovery, elderly care, shifts and home care.',
+      '/guides/', idx_ld) + '<body>' + NAV + '<main class="pwrap">'
+      + '<div class="crumbs"><a href="/">Home</a> &rsaquo; Guides</div>'
+      + '<h1>Guides for families planning care at home</h1>'
+      + '<p class="lead">Plain-language, practical guides on choosing and arranging care at home.</p>'
+      + '<ul>' + glist + '</ul>'
+      + '</main>' + foot('<a href="/">NURZING home</a>') + '</body></html>')
+urls.append('/guides/')
+
 # ---------------- sitemap ----------------
 sm = ['<?xml version="1.0" encoding="UTF-8"?>',
       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
@@ -162,5 +206,5 @@ for u in urls:
 sm.append('</urlset>')
 io.open(os.path.join(PUB, 'sitemap.xml'), 'w', encoding='utf-8').write('\n'.join(sm) + '\n')
 
-print('generated: %d service pages, %d city pages, sitemap with %d urls'
-      % (len(SERVICES), len(CITIES), len(urls)))
+print('generated: %d service pages, %d city pages, %d guides, sitemap with %d urls'
+      % (len(SERVICES), len(CITIES), len(GUIDES), len(urls)))
