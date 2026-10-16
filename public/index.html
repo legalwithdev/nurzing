@@ -34,6 +34,79 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/assets/site.css" />
+<style id="feed-style">
+/* ---------- HERO: swipe-able nurse profile feed ---------- */
+.hero-feed{position:relative;height:100vh;height:100svh;min-height:600px;padding:74px 0 96px;
+  background:radial-gradient(120% 80% at 50% -10%,rgba(217,183,97,.13),transparent 62%),var(--paper);overflow:hidden}
+.feed{height:100%;overflow-y:auto;overflow-x:hidden;scroll-snap-type:y mandatory;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none}
+.feed::-webkit-scrollbar{display:none}
+.slide{height:100%;scroll-snap-align:center;display:flex;align-items:center;justify-content:center;padding:8px 18px}
+.ncard{width:min(430px,100%);max-height:100%;background:#fff;border:1px solid var(--line);
+  border-radius:28px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden}
+.ncard-top{display:flex;gap:8px;padding:16px 18px 0}
+.ncard-top .pill{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:.42rem .7rem;border-radius:999px}
+.pill-gold{background:linear-gradient(135deg,var(--gold-300),var(--gold-500));color:var(--teal-1000)}
+.pill-teal{background:rgba(10,64,60,.07);color:var(--teal-800);border:1px solid var(--line)}
+.ncard-photo{margin:14px 18px 0;height:148px;border-radius:20px;position:relative;overflow:hidden;
+  background:linear-gradient(150deg,var(--teal-800),var(--teal-1000))}
+.ncard-photo .init{position:absolute;inset:0;display:grid;place-items:center;
+  font-family:var(--serif);font-size:3.5rem;color:var(--gold-300);letter-spacing:.03em}
+.ncard-photo .badge{position:absolute;left:12px;bottom:11px;background:rgba(255,255,255,.15);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.24);
+  color:#fff;font-size:.72rem;font-weight:600;padding:.34rem .62rem;border-radius:999px}
+.ncard-body{padding:15px 18px 4px;display:flex;flex-direction:column;gap:8px}
+.ncard-name{font-family:var(--serif);font-size:1.5rem;color:var(--teal-1000);line-height:1.15;margin:0}
+.ncard-name small{font-family:var(--sans);font-size:.76rem;font-weight:600;color:var(--teal-700);
+  margin-left:7px;vertical-align:middle}
+.ncard-role{font-size:.92rem;color:var(--muted)}
+.ncard-stars{font-size:.95rem;color:var(--gold-500);letter-spacing:.05em}
+.ncard-stars b{color:var(--teal-1000);font-family:var(--sans)}
+.ncard-stars span{color:var(--muted);font-family:var(--sans);font-size:.85rem}
+.ncard-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.ncard-chips .c{font-size:.75rem;font-weight:600;color:var(--teal-800);background:rgba(10,64,60,.06);
+  border:1px solid var(--line);padding:.34rem .6rem;border-radius:999px}
+.ncard-loc{font-size:.84rem;color:var(--muted)}
+.ncard-verify{display:flex;flex-wrap:wrap;gap:10px;padding-top:11px;margin-top:2px;
+  border-top:1px dashed var(--line)}
+.ncard-verify .v{font-size:.74rem;font-weight:600;color:var(--teal-700)}
+.ncard-foot{margin-top:auto;padding:13px 18px 17px;display:flex;align-items:center;
+  justify-content:space-between;gap:12px;border-top:1px solid var(--line)}
+.ncard-foot .price{font-family:var(--serif);font-size:1.4rem;color:var(--teal-1000)}
+.ncard-foot .price small{font-family:var(--sans);font-size:.74rem;color:var(--muted);font-weight:500}
+.ncard-foot .acts{display:flex;gap:8px;align-items:center}
+.ncard-save{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:#fff;
+  display:grid;place-items:center;cursor:pointer;font-size:1.1rem;color:var(--teal-800);line-height:1}
+.ncard-save.on{background:rgba(217,183,97,.22);border-color:var(--gold-500);color:var(--gold-600)}
+.feed-ui{position:absolute;left:0;right:0;bottom:104px;display:flex;justify-content:center;pointer-events:none}
+.feed-hint{background:rgba(6,42,40,.88);color:var(--cream);font-size:.78rem;font-weight:600;
+  padding:.5rem .95rem;border-radius:999px;display:inline-flex;align-items:center;gap:8px}
+.feed-hint .up{display:inline-block;animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.feed-count{position:absolute;right:20px;top:88px;font-size:.74rem;font-weight:700;
+  color:var(--teal-800);opacity:.72;font-family:var(--sans)}
+.hero-copy{padding:66px 22px 46px;text-align:center;background:var(--paper)}
+.hero-copy .wrap{max-width:760px;margin:0 auto}
+.hero-copy .eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--teal-600)}
+.hero-copy h1{font-family:var(--serif);font-size:clamp(2rem,6.4vw,3.5rem);line-height:1.04;
+  color:var(--teal-1000);margin:.7rem 0 1rem;font-weight:500}
+.hero-copy h1 em{color:var(--teal-600);font-style:italic}
+.hero-copy .lead{font-size:1.08rem;color:var(--muted);max-width:40rem;margin:0 auto 1.9rem}
+.hero-copy .hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.hero-copy .hero-trust{display:flex;flex-direction:column;gap:12px;margin:2.2rem auto 0;
+  max-width:430px;text-align:left}
+.hero-copy .hero-trust .t{display:inline-flex;align-items:center;gap:10px;font-size:.92rem;
+  color:var(--teal-900)}
+@media (min-width:900px){
+  .hero-feed{height:auto;min-height:0;padding:98px 0 56px}
+  .feed{height:min(78vh,720px)}
+  .ncard-photo{height:186px}
+  .feed-count{top:112px}
+  .feed-ui{bottom:16px}
+}
+</style>
 </head>
 <body>
 
@@ -85,71 +158,30 @@
 
 <main id="top">
 
-<!-- HERO -->
-<section class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <span class="eyebrow">A new-age nursing bureau</span>
-      <h1>Nursing care that feels <em>effortless.</em></h1>
-      <p class="lead">Nurses and healthcare attendants at your doorstep — booked in minutes, at <strong style="font-weight:600;color:var(--teal-900)">prices you can see upfront.</strong> No waiting rooms. No phone tag. No guesswork.</p>
-      <div class="hero-actions">
-        <a href="#match" class="btn btn-gold btn-lg">Find your care match <span class="arrow">&rarr;</span></a>
-        <a href="tel:+919180000000" class="btn btn-ghost btn-lg">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z" stroke="#073331" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Talk to a care advisor
-        </a>
-      </div>
-      <div class="hero-trust">
-        <span class="t"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.4 8.6 8 11 4.6-2.4 8-6 8-11V5l-8-3Z" stroke="#2E8A7E" stroke-width="1.5"/><path d="m9 12 2 2 4-4" stroke="#C69C42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> [Your verification process]</span>
-        <span class="t"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.3-7-10a7 7 0 0 1 14 0c0 5.7-7 10-7 10Z" stroke="#2E8A7E" stroke-width="1.5"/><circle cx="12" cy="11" r="2.4" stroke="#C69C42" stroke-width="1.6"/></svg> [Shift options — list yours]</span>
-        <span class="t"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#2E8A7E" stroke-width="1.5"/><path d="M12 7v5l3 2" stroke="#C69C42" stroke-width="1.7" stroke-linecap="round"/></svg> [Your typical placement time]</span>
-      </div>
+<!-- HERO — swipe-able nurse profile feed -->
+<section class="hero-feed">
+  <div class="feed" id="feed" tabindex="0" aria-label="Nurse profile feed — swipe up for the next nurse"></div>
+  <div class="feed-count"><span id="feedNow">1</span> / <span id="feedTotal">12</span></div>
+  <div class="feed-ui"><div class="feed-hint"><span class="up">↑</span> Swipe up — next nurse</div></div>
+</section>
+
+<!-- HERO COPY — below the feed -->
+<section class="hero-copy">
+  <div class="wrap">
+    <span class="eyebrow">A new-age nursing bureau</span>
+    <h1>Nursing care that feels <em>effortless.</em></h1>
+    <p class="lead">Nurses and healthcare attendants at your doorstep — booked in minutes, at <strong style="font-weight:600;color:var(--teal-900)">prices you can see upfront.</strong> No waiting rooms. No phone tag. No guesswork.</p>
+    <div class="hero-actions">
+      <a href="#match" class="btn btn-gold btn-lg">Find your care match <span class="arrow">&rarr;</span></a>
+      <a href="tel:+919180000000" class="btn btn-ghost btn-lg">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z" stroke="#073331" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Talk to a care advisor
+      </a>
     </div>
-
-    <div class="hero-visual">
-      <span class="ring r1"></span>
-      <span class="ring r2"></span>
-      <span class="blob b1"></span>
-      <span class="blob b2"></span>
-
-      <div class="match-card">
-        <div class="match-top">
-          <span class="pill pill-gold">Best match</span>
-          <span class="pill pill-teal">Available today</span>
-        </div>
-        <div class="nurse-row">
-          <span class="avatar">
-            <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="17" r="8.5" fill="#EBD69B" opacity=".92"/><path d="M8 44c0-8.8 7.2-14 16-14s16 5.2 16 14" fill="#EBD69B" opacity=".92"/><path d="M17 40h14M24 33v14" stroke="#073331" stroke-width="2" stroke-linecap="round" opacity=".55"/></svg>
-          </span>
-          <div class="nurse-meta">
-            <h4>[Nurse name], RN</h4>
-            <div class="sub">ICU-trained · 8 yrs experience</div>
-            <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733; <span style="color:var(--muted);font-family:var(--sans)">[rating] · [visits]</span></div>
-          </div>
-        </div>
-        <div class="match-chips">
-          <span class="chip"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="#0E524C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> [Verification badge 1]</span>
-          <span class="chip"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="#0E524C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> [Verification badge 2]</span>
-          <span class="chip"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="#0E524C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> [Verification badge 3]</span>
-        </div>
-        <div class="match-foot">
-          <span class="eta">Earliest arrival <b>[your SLA]</b></span>
-          <a href="#match" class="btn btn-gold" style="padding:.7rem 1.1rem;font-size:.82rem">Confirm &rarr;</a>
-        </div>
-      </div>
-
-      <div class="float-pill fp-1">
-        <div class="num">[000]+</div>
-        <div class="lbl">Verified nurses</div>
-      </div>
-      <div class="float-pill fp-2">
-        <div class="num">[0.0]<span style="font-size:1rem">&#9733;</span></div>
-        <div class="lbl">Avg. family rating</div>
-      </div>
-      <div class="float-pill fp-3">
-        <div class="num">&#8377;[000]<span style="font-size:.9rem">+</span></div>
-        <div class="lbl">Transparent daily rates</div>
-      </div>
+    <div class="hero-trust">
+      <span class="t"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.4 8.6 8 11 4.6-2.4 8-6 8-11V5l-8-3Z" stroke="#2E8A7E" stroke-width="1.5"/><path d="m9 12 2 2 4-4" stroke="#C69C42" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> [Your verification process]</span>
+      <span class="t"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.3-7-10a7 7 0 0 1 14 0c0 5.7-7 10-7 10Z" stroke="#2E8A7E" stroke-width="1.5"/><circle cx="12" cy="11" r="2.4" stroke="#C69C42" stroke-width="1.6"/></svg> [Shift options — list yours]</span>
+      <span class="t"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#2E8A7E" stroke-width="1.5"/><path d="M12 7v5l3 2" stroke="#C69C42" stroke-width="1.7" stroke-linecap="round"/></svg> [Your typical placement time]</span>
     </div>
   </div>
 </section>
@@ -656,6 +688,58 @@ function syncShell(){
 addEventListener('scroll',syncShell,{passive:true});
 addEventListener('resize',syncShell);
 syncShell();
+</script>
+<script>
+(function(){
+  var NURSES = [{n:"Ananya Rao",q:"RN",r:"Senior Staff Nurse",c:"Bengaluru",a:"Koramangala",rate:1800,rt:4.9,rev:214,y:8,av:true,km:2.4,ct:["Home Nursing", "ICU-trained", "Post-Surgical"]},{n:"Fatima Sheikh",q:"RN",r:"Maternity Nurse",c:"Bengaluru",a:"Whitefield",rate:2000,rt:5.0,rev:168,y:6,av:true,km:5.1,ct:["Mother & Baby", "Home Nursing"]},{n:"Rakesh Nair",q:"RN",r:"Attendant / Caregiver",c:"Mumbai",a:"Andheri West",rate:1100,rt:4.7,rev:302,y:10,av:true,km:3.8,ct:["Elderly Care"]},{n:"Meera Krishnan",q:"RN",r:"Physiotherapist",c:"Chennai",a:"Adyar",rate:900,rt:4.8,rev:141,y:7,av:false,km:4.2,ct:["Physiotherapy"]},{n:"Priya Deshmukh",q:"RN",r:"Staff Nurse",c:"Pune",a:"Baner",rate:1500,rt:4.9,rev:97,y:5,av:true,km:1.9,ct:["Home Nursing", "Post-Surgical"]},{n:"Imran Qureshi",q:"RN",r:"ICU-trained Nurse",c:"Delhi NCR",a:"Saket",rate:2300,rt:4.8,rev:76,y:9,av:true,km:6.3,ct:["ICU-trained", "Home Nursing", "Post-Surgical"]},{n:"Lakshmi Reddy",q:"RN",r:"Elderly Care Nurse",c:"Hyderabad",a:"Gachibowli",rate:1300,rt:4.9,rev:188,y:6,av:true,km:2.7,ct:["Elderly Care", "Home Nursing"]},{n:"Grace Fernandes",q:"RN",r:"Senior Staff Nurse",c:"Mumbai",a:"Bandra",rate:1900,rt:4.7,rev:122,y:11,av:false,km:7.4,ct:["Home Nursing", "Post-Surgical", "Mother & Baby"]},{n:"Karan Singh",q:"RN",r:"Attendant / Ward Boy",c:"Delhi NCR",a:"Dwarka",rate:1000,rt:4.6,rev:265,y:8,av:true,km:5.6,ct:["Elderly Care"]},{n:"Divya Pillai",q:"RN",r:"Staff Nurse",c:"Chennai",a:"Velachery",rate:1600,rt:4.9,rev:88,y:5,av:true,km:3.1,ct:["Home Nursing", "Post-Surgical"]},{n:"Sunita Joshi",q:"RN",r:"Maternity Nurse",c:"Pune",a:"Kothrud",rate:1900,rt:4.8,rev:103,y:7,av:true,km:2.2,ct:["Mother & Baby", "Home Nursing"]},{n:"Joseph Mathew",q:"RN",r:"Senior Staff Nurse",c:"Bengaluru",a:"Indiranagar",rate:1700,rt:4.9,rev:149,y:10,av:true,km:1.6,ct:["Home Nursing", "ICU-trained", "Post-Surgical"]}];
+  var feed = document.getElementById('feed'); if(!feed) return;
+  var nowEl = document.getElementById('feedNow'), totEl = document.getElementById('feedTotal');
+  if(totEl) totEl.textContent = NURSES.length;
+  var cycles = 0, MAXC = 40;
+  function stars(r){var n=Math.round(r),s='';for(var i=0;i<5;i++)s+= i<n?'\u2605':'\u2606';return s;}
+  function esc(t){return String(t).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+  function card(n,first){
+    var init = n.n.split(' ').map(function(w){return w[0];}).slice(0,2).join('');
+    var chips = n.ct.map(function(c){return '<span class="c">'+esc(c)+'</span>';}).join('');
+    return '<article class="slide"><div class="ncard">'
+      + '<div class="ncard-top">'
+        + (first ? '<span class="pill pill-gold">Best match</span>' : '')
+        + (n.av ? '<span class="pill pill-teal">Available today</span>' : '<span class="pill pill-teal">Book ahead</span>')
+      + '</div>'
+      + '<div class="ncard-photo"><span class="init">'+esc(init)+'</span><span class="badge">'+esc(n.r)+'</span></div>'
+      + '<div class="ncard-body">'
+        + '<h3 class="ncard-name">'+esc(n.n)+'<small>'+esc(n.q)+'</small></h3>'
+        + '<div class="ncard-role">'+esc(n.r)+' \u00b7 '+n.y+' yrs experience</div>'
+        + '<div class="ncard-stars">'+stars(n.rt)+' <b>'+n.rt.toFixed(1)+'</b> <span>\u00b7 '+n.rev+' visits</span></div>'
+        + '<div class="ncard-chips">'+chips+'</div>'
+        + '<div class="ncard-loc">\u25c9 '+esc(n.a)+', '+esc(n.c)+' \u00b7 '+n.km+' km away</div>'
+        + '<div class="ncard-verify"><span class="v">\u2713 ID verified</span><span class="v">\u2713 Police check</span><span class="v">\u2713 Insured</span></div>'
+      + '</div>'
+      + '<div class="ncard-foot">'
+        + '<div class="price">\u20b9'+n.rate.toLocaleString('en-IN')+' <small>/day</small></div>'
+        + '<div class="acts"><button class="ncard-save" type="button" aria-label="Save nurse">\u2661</button>'
+        + '<a class="btn btn-gold" href="#match">Book \u2192</a></div>'
+      + '</div>'
+    + '</div></article>';
+  }
+  function addCycle(){var h='';for(var i=0;i<NURSES.length;i++)h+=card(NURSES[i],i===0);feed.insertAdjacentHTML('beforeend',h);cycles++;}
+  addCycle(); addCycle();
+  var ticking=false;
+  feed.addEventListener('scroll',function(){
+    if(ticking) return; ticking=true;
+    requestAnimationFrame(function(){
+      ticking=false;
+      var h=feed.clientHeight||1;
+      var i=Math.round(feed.scrollTop/h);
+      if(nowEl) nowEl.textContent=(i%NURSES.length)+1;
+      if(cycles<MAXC && feed.scrollTop+feed.clientHeight*2>=feed.scrollHeight) addCycle();
+    });
+  },{passive:true});
+  feed.addEventListener('click',function(e){
+    var b=e.target.closest?e.target.closest('.ncard-save'):null; if(!b) return;
+    var on=b.classList.toggle('on'); b.textContent=on?'\u2665':'\u2661';
+  });
+})();
 </script>
 </body>
 </html>
