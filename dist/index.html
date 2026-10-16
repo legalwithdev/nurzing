@@ -40,7 +40,7 @@ var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('cont
 <link rel="stylesheet" href="/assets/site.css" />
 <style id="feed-style">
 /* ---------- HERO: swipe-able nurse profile feed ---------- */
-.hero-feed{position:relative;padding:78px 0 0;
+.hero-feed{position:relative;padding:24px 0 0;
   background:radial-gradient(120% 80% at 50% -10%,rgba(217,183,97,.13),transparent 62%),var(--paper);overflow:hidden}
 .feed{display:flex;align-items:stretch;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;
   -webkit-overflow-scrolling:touch;scrollbar-width:none}
@@ -154,6 +154,14 @@ var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('cont
 
 <main id="top">
 
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Home Nursing</span><span>Elderly Care</span><span>Post-Surgical Recovery</span><span>Mother &amp; Baby Care</span><span>Physiotherapy at Home</span><span>ICU-trained Nurses</span><span>Attendants &amp; Ward Boys</span><span>Palliative Support</span>
+    <span>Home Nursing</span><span>Elderly Care</span><span>Post-Surgical Recovery</span><span>Mother &amp; Baby Care</span><span>Physiotherapy at Home</span><span>ICU-trained Nurses</span><span>Attendants &amp; Ward Boys</span><span>Palliative Support</span>
+  </div>
+</div>
+
 <!-- HERO — swipe-able nurse profile feed -->
 <section class="hero-feed">
   <div class="feed" id="feed" tabindex="0" aria-label="Nurse profile feed — swipe sideways for the next nurse"></div>
@@ -179,14 +187,6 @@ var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('cont
     </div>
   </div>
 </section>
-
-<!-- MARQUEE -->
-<div class="marquee" aria-hidden="true">
-  <div class="marquee-track">
-    <span>Home Nursing</span><span>Elderly Care</span><span>Post-Surgical Recovery</span><span>Mother &amp; Baby Care</span><span>Physiotherapy at Home</span><span>ICU-trained Nurses</span><span>Attendants &amp; Ward Boys</span><span>Palliative Support</span>
-    <span>Home Nursing</span><span>Elderly Care</span><span>Post-Surgical Recovery</span><span>Mother &amp; Baby Care</span><span>Physiotherapy at Home</span><span>ICU-trained Nurses</span><span>Attendants &amp; Ward Boys</span><span>Palliative Support</span>
-  </div>
-</div>
 
 <!-- SERVICES -->
 <section class="services" id="services">
