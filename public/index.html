@@ -81,11 +81,6 @@
 .ncard-save{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:#fff;
   display:grid;place-items:center;cursor:pointer;font-size:1.1rem;color:var(--teal-800);line-height:1}
 .ncard-save.on{background:rgba(217,183,97,.22);border-color:var(--gold-500);color:var(--gold-600)}
-.feed-ui{position:absolute;left:0;right:0;bottom:104px;display:flex;justify-content:center;pointer-events:none}
-.feed-hint{background:rgba(6,42,40,.88);color:var(--cream);font-size:.78rem;font-weight:600;
-  padding:.5rem .95rem;border-radius:999px;display:inline-flex;align-items:center;gap:8px}
-.feed-hint .up{display:inline-block;animation:bob 1.6s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
 .hero-copy{padding:66px 22px 46px;text-align:center;background:var(--paper)}
 .hero-copy .wrap{max-width:760px;margin:0 auto}
 .hero-copy .eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
@@ -103,7 +98,6 @@
   .hero-feed{height:auto;min-height:0;padding:98px 0 56px}
   .feed{height:min(78vh,720px)}
   .ncard-photo{height:186px}
-  .feed-ui{bottom:16px}
 }
 </style>
 </head>
@@ -160,7 +154,6 @@
 <!-- HERO — swipe-able nurse profile feed -->
 <section class="hero-feed">
   <div class="feed" id="feed" tabindex="0" aria-label="Nurse profile feed — swipe sideways for the next nurse"></div>
-  <div class="feed-ui"><div class="feed-hint"><span class="up">→</span> Swipe — next nurse</div></div>
 </section>
 
 <!-- HERO COPY — below the feed -->
