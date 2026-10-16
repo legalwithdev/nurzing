@@ -86,8 +86,6 @@
   padding:.5rem .95rem;border-radius:999px;display:inline-flex;align-items:center;gap:8px}
 .feed-hint .up{display:inline-block;animation:bob 1.6s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
-.feed-count{position:absolute;right:20px;top:88px;font-size:.74rem;font-weight:700;
-  color:var(--teal-800);opacity:.72;font-family:var(--sans)}
 .hero-copy{padding:66px 22px 46px;text-align:center;background:var(--paper)}
 .hero-copy .wrap{max-width:760px;margin:0 auto}
 .hero-copy .eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
@@ -105,7 +103,6 @@
   .hero-feed{height:auto;min-height:0;padding:98px 0 56px}
   .feed{height:min(78vh,720px)}
   .ncard-photo{height:186px}
-  .feed-count{top:112px}
   .feed-ui{bottom:16px}
 }
 </style>
@@ -163,7 +160,6 @@
 <!-- HERO — swipe-able nurse profile feed -->
 <section class="hero-feed">
   <div class="feed" id="feed" tabindex="0" aria-label="Nurse profile feed — swipe sideways for the next nurse"></div>
-  <div class="feed-count"><span id="feedNow">1</span> / <span id="feedTotal">12</span></div>
   <div class="feed-ui"><div class="feed-hint"><span class="up">→</span> Swipe — next nurse</div></div>
 </section>
 
@@ -695,8 +691,6 @@ syncShell();
 (function(){
   var NURSES = [{n:"Ananya Rao",q:"RN",r:"Senior Staff Nurse",c:"Bengaluru",a:"Koramangala",rate:1800,rt:4.9,rev:214,y:8,av:true,km:2.4,ct:["Home Nursing", "ICU-trained", "Post-Surgical"]},{n:"Fatima Sheikh",q:"RN",r:"Maternity Nurse",c:"Bengaluru",a:"Whitefield",rate:2000,rt:5.0,rev:168,y:6,av:true,km:5.1,ct:["Mother & Baby", "Home Nursing"]},{n:"Rakesh Nair",q:"RN",r:"Attendant / Caregiver",c:"Mumbai",a:"Andheri West",rate:1100,rt:4.7,rev:302,y:10,av:true,km:3.8,ct:["Elderly Care"]},{n:"Meera Krishnan",q:"RN",r:"Physiotherapist",c:"Chennai",a:"Adyar",rate:900,rt:4.8,rev:141,y:7,av:false,km:4.2,ct:["Physiotherapy"]},{n:"Priya Deshmukh",q:"RN",r:"Staff Nurse",c:"Pune",a:"Baner",rate:1500,rt:4.9,rev:97,y:5,av:true,km:1.9,ct:["Home Nursing", "Post-Surgical"]},{n:"Imran Qureshi",q:"RN",r:"ICU-trained Nurse",c:"Delhi NCR",a:"Saket",rate:2300,rt:4.8,rev:76,y:9,av:true,km:6.3,ct:["ICU-trained", "Home Nursing", "Post-Surgical"]},{n:"Lakshmi Reddy",q:"RN",r:"Elderly Care Nurse",c:"Hyderabad",a:"Gachibowli",rate:1300,rt:4.9,rev:188,y:6,av:true,km:2.7,ct:["Elderly Care", "Home Nursing"]},{n:"Grace Fernandes",q:"RN",r:"Senior Staff Nurse",c:"Mumbai",a:"Bandra",rate:1900,rt:4.7,rev:122,y:11,av:false,km:7.4,ct:["Home Nursing", "Post-Surgical", "Mother & Baby"]},{n:"Karan Singh",q:"RN",r:"Attendant / Ward Boy",c:"Delhi NCR",a:"Dwarka",rate:1000,rt:4.6,rev:265,y:8,av:true,km:5.6,ct:["Elderly Care"]},{n:"Divya Pillai",q:"RN",r:"Staff Nurse",c:"Chennai",a:"Velachery",rate:1600,rt:4.9,rev:88,y:5,av:true,km:3.1,ct:["Home Nursing", "Post-Surgical"]},{n:"Sunita Joshi",q:"RN",r:"Maternity Nurse",c:"Pune",a:"Kothrud",rate:1900,rt:4.8,rev:103,y:7,av:true,km:2.2,ct:["Mother & Baby", "Home Nursing"]},{n:"Joseph Mathew",q:"RN",r:"Senior Staff Nurse",c:"Bengaluru",a:"Indiranagar",rate:1700,rt:4.9,rev:149,y:10,av:true,km:1.6,ct:["Home Nursing", "ICU-trained", "Post-Surgical"]}];
   var feed = document.getElementById('feed'); if(!feed) return;
-  var nowEl = document.getElementById('feedNow'), totEl = document.getElementById('feedTotal');
-  if(totEl) totEl.textContent = NURSES.length;
   var cycles = 0, MAXC = 40;
   function stars(r){var n=Math.round(r),s='';for(var i=0;i<5;i++)s+= i<n?'\u2605':'\u2606';return s;}
   function esc(t){return String(t).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
@@ -733,7 +727,6 @@ syncShell();
       ticking=false;
       var w=feed.clientWidth||1;
       var i=Math.round(feed.scrollLeft/w);
-      if(nowEl) nowEl.textContent=(i%NURSES.length)+1;
       if(cycles<MAXC && feed.scrollLeft+feed.clientWidth*2>=feed.scrollWidth) addCycle();
     });
   },{passive:true});
