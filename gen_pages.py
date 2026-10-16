@@ -7,6 +7,8 @@ from guides_content import GUIDES, DISCLAIMER
 HERE = os.path.dirname(os.path.abspath(__file__))
 PUB = os.path.join(HERE, 'public')
 BASE = 'https://nurzing.pages.dev'
+import datetime
+LASTMOD = datetime.date.today().isoformat()
 
 SERVICES = [
     ('home-nursing', 'Home Nursing', 'Skilled nursing care at home',
@@ -40,6 +42,15 @@ CITIES = ['Bengaluru', 'Mumbai', 'Delhi NCR', 'Pune', 'Hyderabad', 'Chennai']
 CITY_SLUG = {'Bengaluru': 'bengaluru', 'Mumbai': 'mumbai', 'Delhi NCR': 'delhi-ncr',
              'Pune': 'pune', 'Hyderabad': 'hyderabad', 'Chennai': 'chennai'}
 
+SEO_TITLE = {
+    'home-nursing': 'Home Nursing at Home \u2014 Book a Nurse | NURZING',
+    'elderly-care': 'Elderly Care at Home \u2014 Attendants | NURZING',
+    'post-surgical-care': 'Post-Surgical Care at Home | NURZING',
+    'mother-baby-care': 'Mother & Baby Care at Home | NURZING',
+    'physiotherapy': 'Physiotherapy at Home | NURZING',
+    'icu-nursing': 'ICU-Trained Nursing at Home | NURZING',
+}
+
 PAGE_CSS = """
 .pnav{position:sticky;top:0;z-index:50;background:rgba(251,248,241,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--line-2)}
 .pnav .in{max-width:900px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;gap:18px}
@@ -67,23 +78,46 @@ PAGE_CSS = """
 .pwrap ul li a{color:var(--teal-700);text-decoration:underline;text-underline-offset:3px}
 """
 
+OG_IMAGE = BASE + '/og-image.png'
+
+def crumb_ld(items):
+    els = []
+    for i, (name, url) in enumerate(items, 1):
+        if url:
+            els.append('{"@type":"ListItem","position":%d,"name":"%s","item":"%s%s"}' % (i, name, BASE, url))
+        else:
+            els.append('{"@type":"ListItem","position":%d,"name":"%s"}' % (i, name))
+    return ('{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[%s]}'
+            % ','.join(els))
+
 def head(title, desc, path, ld=None):
-    ldjson = ''
-    if ld:
-        ldjson = '\n<script type="application/ld+json">%s</script>' % ld
+    lds = ld if isinstance(ld, list) else ([ld] if ld else [])
+    ldjson = ''.join('\n<script type="application/ld+json">%s</script>' % x for x in lds)
     return ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8" />\n'
             '<meta name="viewport" content="width=device-width, initial-scale=1" />\n'
             '<title>%s</title>\n<meta name="description" content="%s" />\n'
             '<link rel="canonical" href="%s%s" />\n<meta name="robots" content="index, follow" />\n'
-            '<meta property="og:type" content="website" />\n<meta property="og:title" content="%s" />\n'
-            '<meta property="og:description" content="%s" />\n<meta property="og:url" content="%s%s" />\n'
-            '<meta name="twitter:card" content="summary" />\n'
+            '<meta property="og:type" content="website" />\n<meta property="og:site_name" content="NURZING" />\n'
+            '<meta property="og:locale" content="en_IN" />\n'
+            '<meta property="og:title" content="%s" />\n'
+            '<meta property="og:description" content="%s" />\n'
+            '<meta property="og:url" content="%s%s" />\n'
+            '<meta property="og:image" content="%s" />\n'
+            '<meta property="og:image:width" content="1200" />\n'
+            '<meta property="og:image:height" content="630" />\n'
+            '<meta property="og:image:alt" content="NURZING \u2014 nurses and attendants at your doorstep" />\n'
+            '<meta name="twitter:card" content="summary_large_image" />\n'
+            '<meta name="twitter:title" content="%s" />\n'
+            '<meta name="twitter:description" content="%s" />\n'
+            '<meta name="twitter:image" content="%s" />\n'
+            '<link rel="apple-touch-icon" href="/apple-touch-icon.png" />\n'
             '<link rel="icon" href="/favicon.svg" />\n'
             '<link rel="preconnect" href="https://fonts.googleapis.com" />\n'
             '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />\n'
             '<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />\n'
             '<link rel="stylesheet" href="/assets/site.css" />\n<style>%s</style>%s\n</head>\n'
-            % (title, desc, BASE, path, title, desc, BASE, path, PAGE_CSS, ldjson))
+            % (title, desc, BASE, path, title, desc, BASE, path, OG_IMAGE,
+               title, desc, OG_IMAGE, PAGE_CSS, ldjson))
 
 NAV = ('<header class="pnav"><div class="in">'
        '<a href="/"><b>NURZING</b></a>'
@@ -109,13 +143,14 @@ urls = ['/']
 # ---------------- service pages ----------------
 for slug, name, h1, lead, items in SERVICES:
     path = '/services/%s.html' % slug
-    title = '%s \u2014 %s at Home | NURZING' % (h1, name)
+    title = SEO_TITLE[slug]
     desc = lead[:150]
     citylinks = ''.join('<a href="/cities/%s.html">%s</a>' % (CITY_SLUG[c], c) for c in CITIES)
     other = ''.join('<a href="/services/%s.html">%s</a>' % (s[0], s[1]) for s in SERVICES if s[0] != slug)
-    ld = ('{"@context":"https://schema.org","@type":"Service","name":"%s","serviceType":"%s",'
+    svc_ld = ('{"@context":"https://schema.org","@type":"Service","name":"%s","serviceType":"%s",'
           '"provider":{"@type":"MedicalBusiness","name":"NURZING","url":"%s/"},'
           '"areaServed":"India","url":"%s%s"}' % (name, name, BASE, BASE, path))
+    ld = [svc_ld, crumb_ld([("Home", "/"), ("Services", "/services/home-nursing.html"), (name, None)])]
     html = (head(title, desc, path, ld) + '<body>' + NAV + '<main class="pwrap">'
             + '<div class="crumbs"><a href="/">Home</a> &rsaquo; <a href="/services/home-nursing.html">Services</a> &rsaquo; %s</div>' % name
             + '<h1>%s</h1>' % h1
@@ -140,9 +175,10 @@ for city in CITIES:
             'and trained attendants in %s.' % city)
     svclinks = ''.join('<a href="/services/%s.html">%s</a>' % (s[0], s[1]) for s in SERVICES)
     citylinks = ''.join('<a href="/cities/%s.html">%s</a>' % (CITY_SLUG[c], c) for c in CITIES if c != city)
-    ld = ('{"@context":"https://schema.org","@type":"Service","name":"Home nursing in %s","areaServed":"%s",'
+    city_ld = ('{"@context":"https://schema.org","@type":"Service","name":"Home nursing in %s","areaServed":"%s",'
           '"provider":{"@type":"MedicalBusiness","name":"NURZING","url":"%s/"},"url":"%s%s"}'
           % (city, city, BASE, BASE, path))
+    ld = [city_ld, crumb_ld([("Home", "/"), ("Cities", "/cities/bengaluru.html"), (city, None)])]
     html = (head(title, desc, path, ld) + '<body>' + NAV + '<main class="pwrap">'
             + '<div class="crumbs"><a href="/">Home</a> &rsaquo; <a href="/cities/bengaluru.html">Cities</a> &rsaquo; %s</div>' % city
             + '<h1>Home nursing and attendants in %s</h1>' % city
@@ -160,10 +196,11 @@ for city in CITIES:
 # ---------------- guide pages ----------------
 for g in GUIDES:
     path = '/guides/%s.html' % g['slug']
-    ld = ('{"@context":"https://schema.org","@type":"Article","headline":"%s","description":"%s",'
+    art_ld = ('{"@context":"https://schema.org","@type":"Article","headline":"%s","description":"%s",'
           '"author":{"@type":"Organization","name":"NURZING"},'
           '"publisher":{"@type":"Organization","name":"NURZING"},"url":"%s%s"}'
           % (g['h1'], g['desc'], BASE, path))
+    ld = [art_ld, crumb_ld([("Home", "/"), ("Guides", "/guides/"), (g['h1'], None)])]
     body = '<h1>%s</h1><p class="lead">%s</p>' % (g['h1'], g['intro'])
     for h2, blocks in g['sections']:
         body += '<h2>%s</h2>' % h2
@@ -187,6 +224,7 @@ for g in GUIDES:
 glist = ''.join('<li><a href="/guides/%s.html">%s</a></li>' % (g['slug'], g['h1']) for g in GUIDES)
 idx_ld = ('{"@context":"https://schema.org","@type":"CollectionPage",'
           '"name":"NURZING guides","url":"%s/guides/"}' % BASE)
+idx_ld = [idx_ld, crumb_ld([("Home", "/"), ("Guides", None)])]
 write('guides/index.html', head('Guides for Families Planning Care at Home | NURZING',
       'Practical guides on choosing a home nurse, post-surgery recovery, elderly care, shifts and home care.',
       '/guides/', idx_ld) + '<body>' + NAV + '<main class="pwrap">'
@@ -202,7 +240,7 @@ sm = ['<?xml version="1.0" encoding="UTF-8"?>',
       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
 for u in urls:
     pri = '1.0' if u == '/' else '0.8'
-    sm.append('  <url><loc>%s%s</loc><changefreq>weekly</changefreq><priority>%s</priority></url>' % (BASE, u, pri))
+    sm.append('  <url><loc>%s%s</loc><lastmod>%s</lastmod><changefreq>weekly</changefreq><priority>%s</priority></url>' % (BASE, u, LASTMOD, pri))
 sm.append('</urlset>')
 io.open(os.path.join(PUB, 'sitemap.xml'), 'w', encoding='utf-8').write('\n'.join(sm) + '\n')
 
