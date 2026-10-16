@@ -20,9 +20,11 @@ export default function Discover() {
       }
       return true;
     });
-    if (sort === 'rating') r = [...r].sort((a, b) => b.rating - a.rating);
-    if (sort === 'price') r = [...r].sort((a, b) => a.rate - b.rate);
-    if (sort === 'distance') r = [...r].sort((a, b) => a.distanceKm - b.distanceKm);
+    // tier is ALWAYS the primary key: licensed RN&RM / B.Sc nurses first.
+    const tier = (n) => n.tier || 9;
+    if (sort === 'rating') r = [...r].sort((a, b) => tier(a) - tier(b) || b.rating - a.rating);
+    if (sort === 'price') r = [...r].sort((a, b) => tier(a) - tier(b) || a.rate - b.rate);
+    if (sort === 'distance') r = [...r].sort((a, b) => tier(a) - tier(b) || a.distanceKm - b.distanceKm);
     return r;
   }, [q, care, city, sort]);
 
@@ -35,6 +37,10 @@ export default function Discover() {
       </p>
 
       <p className="muted" style={{ fontSize: '.78rem', marginTop: 8 }}>Showing sample professionals for demo — replace with your real records before launch.</p>
+
+      <p className="muted" style={{ fontSize: '.78rem', marginTop: 6 }}>
+        Priority order: licensed nurses (RN&amp;RM / B.Sc Nursing, with a specialisation) are shown first, then other licensed professions, then non-medical support roles.
+      </p>
 
       <div className="searchbar" style={{ marginTop: 18 }}>
         <SearchIcon />

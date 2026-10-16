@@ -14,26 +14,28 @@ DATA = os.path.join(HERE, 'src', 'data', 'nurses.js')
 src = io.open(DATA, encoding='utf-8').read()
 
 pat = re.compile(
-    r"\{ id: '(nz-\d+)', name: '([^']+)', role: '([^']+)', city: '([^']+)', area: '([^']+)', "
+    r"\{ id: '(nz-\d+)', tier: (\d+), name: '([^']+)', role: '([^']+)', city: '([^']+)', area: '([^']+)', "
     r"rate: (\d+), rating: ([\d.]+), reviews: (\d+), years: (\d+), availableToday: (true|false), "
     r"distanceKm: ([\d.]+),\s*\n\s*careTypes: \[([^\]]+)\]"
 )
 items = []
 for m in pat.finditer(src):
-    gid, name, role, city, area, rate, rating, reviews, years, av, km, ct = m.groups()
+    gid, tier, name, role, city, area, rate, rating, reviews, years, av, km, ct = m.groups()
     care = [x.strip().strip("'") for x in ct.split(',')]
     # `r` is the professional's OWN designation, copied verbatim. No mapping, no suffixes.
-    items.append('{n:%s,r:%s,c:%s,a:%s,rate:%d,rt:%.1f,rev:%d,y:%d,av:%s,km:%s,ct:%s}' % (
+    items.append((int(tier), '{n:%s,r:%s,c:%s,a:%s,rate:%d,rt:%.1f,rev:%d,y:%d,av:%s,km:%s,ct:%s}' % (
         json.dumps(name), json.dumps(role), json.dumps(city), json.dumps(area),
         int(rate), float(rating), int(reviews), int(years),
-        'true' if av == 'true' else 'false', km, json.dumps(care)))
+        'true' if av == 'true' else 'false', km, json.dumps(care))))
 
 if not items:
     raise SystemExit('sync_nurses: parsed 0 nurses from %s — aborting' % DATA)
 
+items.sort(key=lambda t: t[0])          # tier first: licensed RN&RM / B.Sc nurses on top
 array = ('  /* GENERATED from src/data/nurses.js by sync_nurses.py — do not hand-edit.\n'
-         '     `r` is the professional\'s own designation, shown verbatim on the card. */\n'
-         '  var NURSES = [' + ','.join(items) + '];')
+         '     `r` is the professional\'s own designation, shown verbatim on the card.\n'
+         '     Ordered by tier: licensed RN&RM / B.Sc nurses first. */\n'
+         '  var NURSES = [' + ','.join(x[1] for x in items) + '];')
 
 html = io.open(LANDING, encoding='utf-8').read()
 new, n = re.subn(r'\n(?:  /\* GENERATED[^\n]*\n(?:     [^\n]*\n)?)?  var NURSES = \[.*?\];',
