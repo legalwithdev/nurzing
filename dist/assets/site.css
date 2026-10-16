@@ -465,3 +465,8 @@ footer{background:var(--teal-1000);color:var(--teal-200);padding:80px 0 150px;ma
 :root[data-theme="dark"] .matcher-nurse{background:rgba(217,183,97,.12);color:var(--ink)}
 
 .ncard-reg .v.q{color:var(--muted)}
+
+/* NURZING GOLDEN BADGE */
+.pill.ncard-gold,.gold-badge{background:linear-gradient(135deg,#F6E7AE,#D9B761 45%,#A67C2C);
+  color:#3A2B08;font-weight:800;letter-spacing:.06em;border:1px solid rgba(255,255,255,.4);
+  box-shadow:0 2px 12px rgba(166,124,44,.45)}
