@@ -7,7 +7,7 @@ GUIDES = [
     {
         'slug': 'choosing-a-home-nurse',
         'h1': 'How to choose a home nurse',
-        'title': 'How to Choose a Home Nurse: What to Ask Before You Hire | NURZING',
+        'title': 'How to Choose a Home Nurse | NURZING',
         'desc': 'A practical checklist for families: what a home nurse does, which questions to ask the agency and the nurse, and the red flags to watch for.',
         'intro': 'Bringing a nurse into your home is a decision about trust. This guide walks through what to look for, what to ask, and how to set things up so care starts on the right foot.',
         'sections': [
@@ -52,7 +52,7 @@ GUIDES = [
     {
         'slug': 'post-surgery-care-at-home',
         'h1': 'Post-surgery recovery at home',
-        'title': 'Post-Surgery Recovery at Home: A Practical Checklist | NURZING',
+        'title': 'Post-Surgery Recovery at Home | NURZING',
         'desc': 'What to prepare before discharge, how to manage wound care, medication and mobility at home, and the warning signs that need a doctor immediately.',
         'intro': 'Recovering at home is usually more comfortable than staying in hospital — but it only works if the basics are in place. This is a practical checklist for the weeks after surgery.',
         'sections': [
@@ -94,7 +94,7 @@ GUIDES = [
     {
         'slug': 'signs-a-parent-needs-support',
         'h1': 'Signs a parent may need support at home',
-        'title': 'Elderly Care: Signs a Parent May Need Support at Home | NURZING',
+        'title': 'Signs a Parent Needs Support at Home | NURZING',
         'desc': 'Changes in daily living, safety, health and memory that often mean an ageing parent needs help at home — and how to start the conversation.',
         'intro': 'Ageing is gradual, and the signs that someone needs help rarely appear all at once. This guide lists the changes worth noticing, and what to do about them.',
         'sections': [
@@ -140,7 +140,7 @@ GUIDES = [
     {
         'slug': '12-hour-vs-24-hour-care',
         'h1': '12-hour vs 24-hour care',
-        'title': '12-Hour vs 24-Hour Care: Which Does Your Family Need? | NURZING',
+        'title': '12-Hour vs 24-Hour Care at Home | NURZING',
         'desc': 'The difference between day/night shift care and live-in cover, when each is appropriate, and how to decide based on what actually happens at night.',
         'intro': 'The most common question families ask is whether they need someone for a shift or around the clock. The answer usually depends on what happens at night.',
         'sections': [
@@ -180,7 +180,7 @@ GUIDES = [
     {
         'slug': 'attendant-vs-nurse',
         'h1': 'Attendant vs nurse: who do you need?',
-        'title': 'Attendant vs Nurse: Who Do You Actually Need at Home? | NURZING',
+        'title': 'Attendant vs Nurse: Who Do You Need? | NURZING',
         'desc': 'What a trained attendant does, what a nurse does, what genuinely needs a doctor, and how to combine roles sensibly.',
         'intro': 'Choosing the wrong role wastes money and leaves gaps in care. Here is a clear split between what attendants do, what nurses do, and what belongs in a hospital.',
         'sections': [
@@ -219,7 +219,7 @@ GUIDES = [
     {
         'slug': 'home-care-vs-hospital',
         'h1': 'Home care vs hospital',
-        'title': 'Home Care vs Hospital: When Is Home the Right Choice? | NURZING',
+        'title': 'Home Care vs Hospital | NURZING',
         'desc': 'What can safely be managed at home, what needs a hospital, and how to make home care safe with the right setup and an emergency plan.',
         'intro': 'Home care is not a replacement for a hospital — it is a different setting for needs that are already understood and stable. This guide covers where the line sits.',
         'sections': [
