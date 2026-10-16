@@ -39,7 +39,7 @@ export default function Discover() {
       <p className="muted" style={{ fontSize: '.78rem', marginTop: 8 }}>Showing sample professionals for demo — replace with your real records before launch.</p>
 
       <p className="muted" style={{ fontSize: '.78rem', marginTop: 6 }}>
-        Priority order: licensed nurses (RN&amp;RM / B.Sc Nursing, with a specialisation) are shown first, then other licensed professions, then non-medical support roles.
+        Priority order: <b>B.Sc Nursing + RN&amp;RM + experience + a specialisation</b> is shown first (highest authority), then RN&amp;RM nurses with GNM, then other licensed professions, then non-medical support roles.
       </p>
 
       <div className="searchbar" style={{ marginTop: 18 }}>

@@ -254,3 +254,9 @@ select.ctl:focus,input.ctl:focus,textarea.ctl:focus{border-color:var(--gold-400)
 .nc-reg.warn{color:var(--gold-600)}
 .chip.warn{color:var(--gold-600);border-color:rgba(198,156,66,.45)}
 :root[data-theme="dark"] .nc-reg.warn,:root[data-theme="dark"] .chip.warn{color:var(--gold-400)}
+
+.nc-reg{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.76rem;font-weight:600}
+.nc-reg .q{color:var(--muted);font-weight:600}
+.nc-reg .ok{color:var(--teal-700);display:inline-flex;align-items:center;gap:5px}
+.nc-reg .warn{color:var(--gold-600)}
+:root[data-theme="dark"] .nc-reg .warn{color:var(--gold-400)}

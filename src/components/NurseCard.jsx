@@ -35,11 +35,16 @@ export default function NurseCard({ nurse }) {
         <PinIcon size={14} /> {nurse.area}, {nurse.city} &middot; {nurse.distanceKm} km
       </div>
       {/* Registration is separate from the designation; a badge shows only when actually verified. */}
-      {nurse.regVerified ? (
-        <div className="nc-reg ok"><CheckIcon size={13} /> {nurse.regType} verified</div>
-      ) : (nurse.regType && nurse.regType !== 'none') ? (
-        <div className="nc-reg warn">Registration not verified</div>
-      ) : null}
+      {(nurse.qual || nurse.regVerified || (nurse.regType && nurse.regType !== 'none')) && (
+        <div className="nc-reg">
+          {nurse.qual && <span className="q">{nurse.qual}</span>}
+          {nurse.regVerified
+            ? <span className="ok"><CheckIcon size={13} /> {nurse.regType} verified</span>
+            : (nurse.regType && nurse.regType !== 'none')
+              ? <span className="warn">Registration not verified</span>
+              : null}
+        </div>
+      )}
       <div className="nc-foot">
         <div className="price">[&#8377;0,000]<small> /day</small></div>
         <Link to={`/book/${nurse.id}`} className="btn btn-gold">Book <span aria-hidden="true">&rarr;</span></Link>
