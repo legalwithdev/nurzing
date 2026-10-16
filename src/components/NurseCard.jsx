@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useBookings } from '../lib/store.jsx';
 import Stars from './Stars.jsx';
-import { HeartIcon, PinIcon } from '../lib/icons.jsx';
+import { HeartIcon, PinIcon, CheckIcon } from '../lib/icons.jsx';
 import { inr } from '../lib/pricing.js';
 
 export default function NurseCard({ nurse }) {
@@ -34,6 +34,12 @@ export default function NurseCard({ nurse }) {
       <div className="nc-sub" style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
         <PinIcon size={14} /> {nurse.area}, {nurse.city} &middot; {nurse.distanceKm} km
       </div>
+      {/* Registration is separate from the designation; a badge shows only when actually verified. */}
+      {nurse.regVerified ? (
+        <div className="nc-reg ok"><CheckIcon size={13} /> {nurse.regType} verified</div>
+      ) : (nurse.regType && nurse.regType !== 'none') ? (
+        <div className="nc-reg warn">Registration not verified</div>
+      ) : null}
       <div className="nc-foot">
         <div className="price">[&#8377;0,000]<small> /day</small></div>
         <Link to={`/book/${nurse.id}`} className="btn btn-gold">Book <span aria-hidden="true">&rarr;</span></Link>

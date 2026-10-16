@@ -247,3 +247,10 @@ select.ctl:focus,input.ctl:focus,textarea.ctl:focus{border-color:var(--gold-400)
 .seg-btn{border:0;background:transparent;font-family:inherit;font-size:.76rem;font-weight:600;color:var(--muted);padding:.42rem .72rem;border-radius:999px;cursor:pointer;line-height:1;transition:.15s}
 .seg-btn:hover{color:var(--ink)}
 .seg-btn.on{background:var(--gold-400);color:#08201E}
+
+/* registration row (separate from the designation) */
+.nc-reg{font-size:.76rem;font-weight:600;display:flex;align-items:center;gap:6px}
+.nc-reg.ok{color:var(--teal-700)}
+.nc-reg.warn{color:var(--gold-600)}
+.chip.warn{color:var(--gold-600);border-color:rgba(198,156,66,.45)}
+:root[data-theme="dark"] .nc-reg.warn,:root[data-theme="dark"] .chip.warn{color:var(--gold-400)}

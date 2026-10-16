@@ -452,3 +452,14 @@ footer{background:var(--teal-1000);color:var(--teal-200);padding:80px 0 150px;ma
 @media (max-width:720px){.tier-facts{grid-template-columns:1fr}}
 :root[data-theme="dark"] .tier{background:linear-gradient(180deg,#0B211F,var(--paper))}
 :root[data-theme="dark"] .tf{background:#0E2321}
+
+/* registration row on the feed card + matcher prefill banner */
+.ncard-reg{display:flex;flex-wrap:wrap;gap:10px;padding-top:11px;margin-top:2px;border-top:1px dashed var(--line)}
+.ncard-reg .v{font-size:.74rem;font-weight:600}
+.ncard-reg .v.ok{color:var(--teal-700)}
+.ncard-reg .v.warn{color:var(--gold-600)}
+.matcher-nurse{margin:0 0 14px;padding:11px 14px;border-radius:14px;background:rgba(217,183,97,.16);
+  border:1px solid rgba(198,156,66,.4);font-size:.86rem;color:var(--teal-900)}
+.matcher-nurse .mn-r{display:block;font-size:.76rem;color:var(--muted);margin-top:2px}
+:root[data-theme="dark"] .ncard-reg .v.warn{color:var(--gold-400)}
+:root[data-theme="dark"] .matcher-nurse{background:rgba(217,183,97,.12);color:var(--ink)}

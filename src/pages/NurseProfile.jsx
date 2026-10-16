@@ -26,7 +26,7 @@ export default function NurseProfile() {
           <div style={{ flex: 1, minWidth: 190 }}>
             <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
               <h1 style={{ fontSize: '1.5rem' }}>{n.name}</h1>
-              <span className="pill pill-gold">Verified</span>
+              {n.regVerified && <span className="pill pill-gold">Registration verified</span>}
             </div>
             <div className="muted" style={{ marginTop: 2 }}>{n.role} &middot; {n.city}</div>
             <div style={{ marginTop: 6 }}><Stars rating={n.rating} count={n.reviews} /></div>
@@ -43,12 +43,13 @@ export default function NurseProfile() {
         </div>
 
         <div className="chip-row" style={{ marginTop: 16 }}>
-          {n.verified.id && <span className="chip"><CheckIcon size={13} /> ID verified</span>}
-          {n.verified.police && <span className="chip"><CheckIcon size={13} /> Police verified</span>}
-          {n.verified.insured && <span className="chip"><CheckIcon size={13} /> Insured</span>}
-          {n.verified.vaccinated && <span className="chip"><CheckIcon size={13} /> Vaccinated</span>}
+          {n.regVerified
+            ? <span className="chip"><CheckIcon size={13} /> {n.regType} registration verified</span>
+            : (n.regType && n.regType !== 'none')
+              ? <span className="chip warn"><CheckIcon size={13} /> Registration not verified</span>
+              : <span className="chip">Not a registered nurse</span>}
         </div>
-        <p className="muted" style={{ fontSize: '.74rem', marginTop: 10 }}>Demo verification badges — replace with your real, verifiable checks.</p>
+        <p className="muted" style={{ fontSize: '.74rem', marginTop: 10 }}>Designation is shown exactly as the professional listed it. A registration badge appears only when the registration type and number have actually been verified.</p>
       </div>
 
       <div className="section-title"><h2>About</h2></div>
