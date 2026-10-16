@@ -463,3 +463,5 @@ footer{background:var(--teal-1000);color:var(--teal-200);padding:80px 0 150px;ma
 .matcher-nurse .mn-r{display:block;font-size:.76rem;color:var(--muted);margin-top:2px}
 :root[data-theme="dark"] .ncard-reg .v.warn{color:var(--gold-400)}
 :root[data-theme="dark"] .matcher-nurse{background:rgba(217,183,97,.12);color:var(--ink)}
+
+.ncard-reg .v.q{color:var(--muted)}
