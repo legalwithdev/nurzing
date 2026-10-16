@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useBookings } from '../lib/store.jsx';
+import { isGold } from '../data/nurses.js';
 import Stars from './Stars.jsx';
 import { HeartIcon, PinIcon, CheckIcon } from '../lib/icons.jsx';
 import { inr } from '../lib/pricing.js';
@@ -26,6 +27,9 @@ export default function NurseCard({ nurse }) {
         </div>
       </Link>
       <div className="nc-badges">
+        {isGold(nurse) && (
+          <span className="gold-badge" title="B.Sc Nursing + RN&RM + experience + specialisation">&#9733; NURZING GOLD</span>
+        )}
         {nurse.careTypes.slice(0, 3).map((c) => (
           <span key={c} className="pill pill-teal">{c}</span>
         ))}

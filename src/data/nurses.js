@@ -105,3 +105,13 @@ export const NURSES = [
 ];
 
 export const getNurse = (id) => NURSES.find((n) => n.id === id);
+
+// ---------------------------------------------------------------------------
+// NURZING GOLDEN BADGE (automatic)
+// Awarded to a professional who holds ALL of:
+//   B.Sc Nursing  +  RN&RM registration  +  higher experience  +  a specialisation
+// It is DERIVED from the record — never set by hand — so it can never drift.
+export const GOLD_MIN_YEARS = 7;
+export const isGold = (n) =>
+  !!n && n.qual === 'B.Sc Nursing' && n.regType === 'RN&RM' &&
+  n.years >= GOLD_MIN_YEARS && /\(.+\)/.test(n.role || '');

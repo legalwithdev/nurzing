@@ -27,11 +27,12 @@ for m in pat.finditer(src):
     (gid, tier, regtype, regv, qual, name, role, city, area,
      rate, rating, reviews, years, av, km, ct) = m.groups()
     care = [x.strip().strip("'") for x in ct.split(',')]
+    gold = (qual == 'B.Sc Nursing' and regtype == 'RN&RM' and int(years) >= 7 and '(' in role)
     # `r` is the professional's OWN designation, copied verbatim. No mapping, no suffixes.
     # `regt` / `regv` are the registration type and its verified flag — separate from `r`.
-    items.append((int(tier), '{n:%s,r:%s,ql:%s,regt:%s,regv:%s,c:%s,a:%s,rate:%d,rt:%.1f,rev:%d,y:%d,av:%s,km:%s,ct:%s}' % (
+    items.append((int(tier), '{n:%s,r:%s,ql:%s,regt:%s,regv:%s,gold:%s,c:%s,a:%s,rate:%d,rt:%.1f,rev:%d,y:%d,av:%s,km:%s,ct:%s}' % (
         json.dumps(name), json.dumps(role), json.dumps(qual), json.dumps(regtype),
-        'true' if regv == 'true' else 'false',
+        'true' if regv == 'true' else 'false', 'true' if gold else 'false',
         json.dumps(city), json.dumps(area), int(rate), float(rating),
         int(reviews), int(years), 'true' if av == 'true' else 'false',
         km, json.dumps(care))))

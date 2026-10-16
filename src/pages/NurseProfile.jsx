@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import { getNurse } from '../data/nurses.js';
+import { getNurse, isGold } from '../data/nurses.js';
 import Stars from '../components/Stars.jsx';
 import { BackIcon, PinIcon, CheckIcon } from '../lib/icons.jsx';
 import { inr } from '../lib/pricing.js';
@@ -26,6 +26,7 @@ export default function NurseProfile() {
           <div style={{ flex: 1, minWidth: 190 }}>
             <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
               <h1 style={{ fontSize: '1.5rem' }}>{n.name}</h1>
+              {isGold(n) && <span className="gold-badge" title="B.Sc Nursing + RN&RM + experience + specialisation">&#9733; NURZING GOLD</span>}
               {n.regVerified && <span className="pill pill-gold">Registration verified</span>}
             </div>
             <div className="muted" style={{ marginTop: 2 }}>{n.role} &middot; {n.city}</div>
