@@ -228,6 +228,7 @@ var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('cont
 
     <div class="matcher">
       <div class="matcher-panel">
+        <div class="matcher-nurse" id="matcherNurse" hidden></div>
         <div class="step-dots" id="dots"><i class="on"></i><i></i><i></i></div>
 
         <!-- STEP 1 -->
@@ -704,13 +705,22 @@ syncShell();
      `r` is the professional's own designation, shown verbatim on the card.
      Ordered by tier: licensed RN&RM / B.Sc nurses first. */
   /* GENERATED from src/data/nurses.js by sync_nurses.py — do not hand-edit.
-     `r` is the professional's own designation, shown verbatim on the card.
+     `r` = the professional's own designation, shown verbatim.
+     `regt`/`regv` = registration type + verified flag (badge only when true).
      Ordered by tier: licensed RN&RM / B.Sc nurses first. */
-  var NURSES = [{n:"Ananya Rao",r:"RN&RM Nurse (ICU)",c:"Bengaluru",a:"Koramangala",rate:1800,rt:4.9,rev:214,y:8,av:true,km:2.4,ct:["Home Nursing", "ICU-trained", "Post-Surgical"]},{n:"Fatima Sheikh",r:"RN&RM Nurse (Maternity)",c:"Bengaluru",a:"Whitefield",rate:2000,rt:5.0,rev:168,y:6,av:true,km:5.1,ct:["Mother & Baby", "Home Nursing"]},{n:"Priya Deshmukh",r:"RN&RM Nurse (Post-Surgical)",c:"Pune",a:"Baner",rate:1500,rt:4.9,rev:97,y:5,av:true,km:1.9,ct:["Home Nursing", "Post-Surgical"]},{n:"Imran Qureshi",r:"RN&RM Nurse (ICU)",c:"Delhi NCR",a:"Saket",rate:2300,rt:4.8,rev:76,y:9,av:true,km:6.3,ct:["ICU-trained", "Home Nursing", "Post-Surgical"]},{n:"Lakshmi Reddy",r:"RN&RM Nurse (Elderly Care)",c:"Hyderabad",a:"Gachibowli",rate:1300,rt:4.9,rev:188,y:6,av:true,km:2.7,ct:["Elderly Care", "Home Nursing"]},{n:"Grace Fernandes",r:"RN&RM Nurse (Post-Surgical)",c:"Mumbai",a:"Bandra",rate:1900,rt:4.7,rev:122,y:11,av:false,km:7.4,ct:["Home Nursing", "Post-Surgical", "Mother & Baby"]},{n:"Divya Pillai",r:"RN&RM Nurse (Post-Surgical)",c:"Chennai",a:"Velachery",rate:1600,rt:4.9,rev:88,y:5,av:true,km:3.1,ct:["Home Nursing", "Post-Surgical"]},{n:"Sunita Joshi",r:"RN&RM Nurse (Maternity)",c:"Pune",a:"Kothrud",rate:1900,rt:4.8,rev:103,y:7,av:true,km:2.2,ct:["Mother & Baby", "Home Nursing"]},{n:"Joseph Mathew",r:"RN&RM Nurse (ICU)",c:"Bengaluru",a:"Indiranagar",rate:1700,rt:4.9,rev:149,y:10,av:true,km:1.6,ct:["Home Nursing", "ICU-trained", "Post-Surgical"]},{n:"Meera Krishnan",r:"Physiotherapist",c:"Chennai",a:"Adyar",rate:900,rt:4.8,rev:141,y:7,av:false,km:4.2,ct:["Physiotherapy"]},{n:"Rakesh Nair",r:"Attendant / Caregiver",c:"Mumbai",a:"Andheri West",rate:1100,rt:4.7,rev:302,y:10,av:true,km:3.8,ct:["Elderly Care"]},{n:"Karan Singh",r:"Attendant / Ward Boy",c:"Delhi NCR",a:"Dwarka",rate:1000,rt:4.6,rev:265,y:8,av:true,km:5.6,ct:["Elderly Care"]}];
+  var NURSES = [{n:"Ananya Rao",r:"RN&RM Nurse (ICU)",regt:"RN&RM",regv:false,c:"Bengaluru",a:"Koramangala",rate:1800,rt:4.9,rev:214,y:8,av:true,km:2.4,ct:["Home Nursing", "ICU-trained", "Post-Surgical"]},{n:"Fatima Sheikh",r:"RN&RM Nurse (Maternity)",regt:"RN&RM",regv:false,c:"Bengaluru",a:"Whitefield",rate:2000,rt:5.0,rev:168,y:6,av:true,km:5.1,ct:["Mother & Baby", "Home Nursing"]},{n:"Priya Deshmukh",r:"RN&RM Nurse (Post-Surgical)",regt:"RN&RM",regv:false,c:"Pune",a:"Baner",rate:1500,rt:4.9,rev:97,y:5,av:true,km:1.9,ct:["Home Nursing", "Post-Surgical"]},{n:"Imran Qureshi",r:"RN&RM Nurse (ICU)",regt:"RN&RM",regv:false,c:"Delhi NCR",a:"Saket",rate:2300,rt:4.8,rev:76,y:9,av:true,km:6.3,ct:["ICU-trained", "Home Nursing", "Post-Surgical"]},{n:"Lakshmi Reddy",r:"RN&RM Nurse (Elderly Care)",regt:"RN&RM",regv:false,c:"Hyderabad",a:"Gachibowli",rate:1300,rt:4.9,rev:188,y:6,av:true,km:2.7,ct:["Elderly Care", "Home Nursing"]},{n:"Grace Fernandes",r:"RN&RM Nurse (Post-Surgical)",regt:"RN&RM",regv:false,c:"Mumbai",a:"Bandra",rate:1900,rt:4.7,rev:122,y:11,av:false,km:7.4,ct:["Home Nursing", "Post-Surgical", "Mother & Baby"]},{n:"Divya Pillai",r:"RN&RM Nurse (Post-Surgical)",regt:"RN&RM",regv:false,c:"Chennai",a:"Velachery",rate:1600,rt:4.9,rev:88,y:5,av:true,km:3.1,ct:["Home Nursing", "Post-Surgical"]},{n:"Sunita Joshi",r:"RN&RM Nurse (Maternity)",regt:"RN&RM",regv:false,c:"Pune",a:"Kothrud",rate:1900,rt:4.8,rev:103,y:7,av:true,km:2.2,ct:["Mother & Baby", "Home Nursing"]},{n:"Joseph Mathew",r:"RN&RM Nurse (ICU)",regt:"RN&RM",regv:false,c:"Bengaluru",a:"Indiranagar",rate:1700,rt:4.9,rev:149,y:10,av:true,km:1.6,ct:["Home Nursing", "ICU-trained", "Post-Surgical"]},{n:"Meera Krishnan",r:"Physiotherapist",regt:"none",regv:false,c:"Chennai",a:"Adyar",rate:900,rt:4.8,rev:141,y:7,av:false,km:4.2,ct:["Physiotherapy"]},{n:"Rakesh Nair",r:"Attendant / Caregiver",regt:"none",regv:false,c:"Mumbai",a:"Andheri West",rate:1100,rt:4.7,rev:302,y:10,av:true,km:3.8,ct:["Elderly Care"]},{n:"Karan Singh",r:"Attendant / Ward Boy",regt:"none",regv:false,c:"Delhi NCR",a:"Dwarka",rate:1000,rt:4.6,rev:265,y:8,av:true,km:5.6,ct:["Elderly Care"]}];
   var feed = document.getElementById('feed'); if(!feed) return;
   var cycles = 0, MAXC = 40;
   function stars(r){var n=Math.round(r),s='';for(var i=0;i<5;i++)s+= i<n?'\u2605':'\u2606';return s;}
   function esc(t){return String(t).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+  var CARE_MAP = {'Home Nursing':'Home Nursing','ICU-trained':'ICU-Trained Nurses','Post-Surgical':'Post-Surgical Recovery','Mother & Baby':'Mother & Baby Care','Elderly Care':'Elderly Care & Attendants','Physiotherapy':'Physiotherapy at Home'};
+  // Registration is a SEPARATE field from the designation. A badge appears ONLY when
+  // the registration is actually verified; otherwise we say so plainly.
+  function regRow(n){
+    if(n.regv) return '<div class="ncard-reg"><span class="v ok">\u2713 '+esc(n.regt)+' verified</span></div>';
+    if(n.regt && n.regt!=='none') return '<div class="ncard-reg"><span class="v warn">Registration not verified</span></div>';
+    return '';
+  }
   function card(n,first){
     var init = n.n.split(' ').map(function(w){return w[0];}).slice(0,2).join('');
     var chips = n.ct.map(function(c){return '<span class="c">'+esc(c)+'</span>';}).join('');
@@ -726,12 +736,12 @@ syncShell();
         + '<div class="ncard-stars">'+stars(n.rt)+' <b>'+n.rt.toFixed(1)+'</b> <span>\u00b7 '+n.rev+' visits</span></div>'
         + '<div class="ncard-chips">'+chips+'</div>'
         + '<div class="ncard-loc">\u25c9 '+esc(n.a)+', '+esc(n.c)+' \u00b7 '+n.km+' km away</div>'
-        + '<div class="ncard-verify"><span class="v">\u2713 ID verified</span><span class="v">\u2713 Police check</span><span class="v">\u2713 Insured</span></div>'
+        + regRow(n)
       + '</div>'
       + '<div class="ncard-foot">'
         + '<div class="price">\u20b9'+n.rate.toLocaleString('en-IN')+' <small>/day</small></div>'
         + '<div class="acts"><button class="ncard-save" type="button" aria-label="Save nurse">\u2661</button>'
-        + '<a class="btn btn-gold" href="#match">Book \u2192</a></div>'
+        + '<a class="btn btn-gold ncard-book" href="#match" data-n="'+esc(n.n)+'" data-r="'+esc(n.r)+'" data-c="'+esc(n.ct[0]||'')+'">Book \u2192</a></div>'
       + '</div>'
     + '</div></article>';
   }
@@ -764,6 +774,20 @@ syncShell();
     var b=e.target.closest?e.target.closest('.ncard-save'):null; if(!b) return;
     var on=b.classList.toggle('on'); b.textContent=on?'\u2665':'\u2661';
   });
+  // Book on a card carries that professional into the matcher (pre-selects the care type).
+  feed.addEventListener('click',function(e){
+    var b=e.target.closest?e.target.closest('.ncard-book'):null; if(!b) return;
+    window.__nzNurse={n:b.getAttribute('data-n'),r:b.getAttribute('data-r'),c:b.getAttribute('data-c')};
+    setTimeout(prefillMatcher,80);
+  });
+  function prefillMatcher(){
+    var d=window.__nzNurse; if(!d) return;
+    var box=document.getElementById('matcherNurse');
+    if(box){ box.hidden=false; box.innerHTML='Booking with <b>'+d.n+'</b> <span class="mn-r">'+d.r+'</span>'; }
+    var want=CARE_MAP[d.c]||d.c;
+    var opts=document.querySelectorAll('#careOpts .opt');
+    for(var i=0;i<opts.length;i++){ if(opts[i].textContent.trim()===want){ opts[i].click(); break; } }
+  }
 })();
 </script>
 </body>
