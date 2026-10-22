@@ -513,3 +513,8 @@ html{scroll-behavior:smooth}
 @media (max-width:1440px){.nav-links{gap:1rem}}
 @media (max-width:1360px){.nav-phone{display:none}}
 @media (max-width:1240px){.nav-links{gap:.78rem}.nav-links a{font-size:.78rem}}
+
+/* footer profile link (replaces the phone line) */
+.fcontact a.line{color:var(--teal-200);text-decoration:none;transition:color .25s}
+.fcontact a.line:hover{color:var(--gold-300)}
+.fcontact a.line svg{color:var(--gold-400)}
