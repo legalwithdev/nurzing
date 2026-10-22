@@ -493,3 +493,23 @@ html{scroll-behavior:smooth}
 .ex-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-soft);border-color:var(--gold-500)}
 @media (max-width:860px){.explore-grid{grid-template-columns:repeat(2,1fr)}}
 :root[data-theme="dark"] .ex-card{background:#0E2321}
+
+/* ---------- manual theme toggle ---------- */
+.theme-btn{width:38px;height:38px;flex:0 0 38px;border-radius:50%;border:1px solid var(--line);
+  background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--teal-800);transition:.2s}
+.theme-btn:hover{background:rgba(10,64,60,.07)}
+.theme-btn .ti{width:18px;height:18px;display:none}
+.theme-btn[data-state="auto"] .ti-auto,
+.theme-btn[data-state="light"] .ti-light,
+.theme-btn[data-state="dark"] .ti-dark{display:block}
+:root[data-theme="dark"] .theme-btn{color:var(--gold-300)}
+:root[data-theme="dark"] .theme-btn:hover{background:rgba(255,255,255,.08)}
+.mm-theme{display:flex;gap:8px;margin-top:auto;padding-top:22px}
+.mm-theme button{flex:1;padding:.62rem;border-radius:12px;border:1px solid rgba(255,255,255,.28);
+  background:transparent;color:var(--cream);font:inherit;font-size:.85rem;font-weight:600;cursor:pointer}
+.mm-theme button.on{background:var(--gold-400);color:#08201E;border-color:var(--gold-400)}
+
+/* keep the 8-link menu on one line across widths */
+@media (max-width:1440px){.nav-links{gap:1rem}}
+@media (max-width:1360px){.nav-phone{display:none}}
+@media (max-width:1240px){.nav-links{gap:.78rem}.nav-links a{font-size:.78rem}}
