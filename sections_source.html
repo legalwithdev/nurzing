@@ -1,0 +1,262 @@
+<!-- LICENSED TIER -->
+<section class="tier" id="tier">
+  <div class="wrap">
+    <span class="eyebrow">Why this matters</span>
+    <h2>Not every caregiver is a nurse.</h2>
+    <p class="lead">An <b>RN&amp;RM</b> (Registered Nurse &amp; Registered Midwife) has completed a recognised GNM or B.Sc Nursing and is <b>registered with a State Nursing Council</b> &mdash; that registration is the licence to practise. Attendants and ward boys are not nurses and cannot legally perform clinical procedures. So registration <em>plus</em> experience <em>plus</em> a specialisation is not something every caregiver can offer.</p>
+    <div class="tier-facts">
+      <div class="tf"><div class="n">~1.7</div><div class="l">nurses per 1,000 people in India &mdash; below the WHO's recommended 2.5</div></div>
+      <div class="tf"><div class="n">Largest</div><div class="l">nurses &amp; midwives are the largest occupational group in the health workforce</div></div>
+      <div class="tf"><div class="n">First</div><div class="l">often the first &mdash; and sometimes the only &mdash; health professional a patient sees</div></div>
+    </div>
+    <p class="tier-src">Sources: WHO (Nursing and Midwifery fact sheet; State of the World's Nursing); Government of India, Lok Sabha (nurse&ndash;population ratio).</p>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">What we arrange</span>
+      <h2>Every kind of care, one trusted place.</h2>
+      <p>Tap any service to see what's included and today's indicative rate. One partner for the whole journey — from a single night shift to long-term live-in support.</p>
+    </div>
+    <div class="svc-list" id="svcList">
+      <!-- rows injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- MATCH / BOOKING -->
+<section class="match-sec" id="match">
+  <div class="wrap match-sec-inner">
+    <div class="sec-head reveal">
+      <span class="eyebrow on-dark">Hassle-free booking</span>
+      <h2>Get a care match in under a minute.</h2>
+      <p>Three quick taps and you'll see who's available near you — with a clear price range before you commit to anything.</p>
+    </div>
+
+    <div class="matcher">
+      <div class="matcher-panel">
+        <div class="matcher-nurse" id="matcherNurse" hidden></div>
+        <div class="step-dots" id="dots"><i class="on"></i><i></i><i></i></div>
+
+        <!-- STEP 1 -->
+        <div class="mstep on" data-step="1">
+          <div class="q">Step 1 of 3</div>
+          <h3>What kind of care do you need?</h3>
+          <div class="opt-grid" id="careOpts"></div>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="mstep" data-step="2">
+          <div class="q">Step 2 of 3</div>
+          <h3>How long, and on what shift?</h3>
+          <div class="opt-grid" id="shiftOpts"></div>
+          <div class="field">
+            <label for="days">Approximate duration</label>
+            <select id="days">
+              <option value="1">1 day</option>
+              <option value="3">2–3 days</option>
+              <option value="7" selected>About a week</option>
+              <option value="30">A month or more</option>
+              <option value="90">Long-term / ongoing</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="mstep" data-step="3">
+          <div class="q">Step 3 of 3</div>
+          <h3>Where should we send your match?</h3>
+          <div class="field">
+            <label for="city">City / area</label>
+            <input id="city" type="text" placeholder="e.g. Koramangala, Bengaluru" autocomplete="address-level2" />
+          </div>
+          <div class="field">
+            <label for="phone">Mobile number</label>
+            <input id="phone" type="tel" placeholder="+91 " inputmode="tel" autocomplete="tel" />
+          </div>
+          <div class="field">
+            <label for="when">When do you need care?</label>
+            <select id="when">
+              <option>As soon as possible</option>
+              <option>Today</option>
+              <option>Tomorrow</option>
+              <option>Within a week</option>
+              <option>Just exploring</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- SUCCESS -->
+        <div class="mstep" data-step="4">
+          <div class="success">
+            <div class="tick">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="#062A28" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3>Request received.</h3>
+            <p>A NURZING care advisor will call you within 15 minutes with matched profiles. Keep your phone handy.</p>
+          </div>
+        </div>
+
+        <div class="mstep-nav" id="navRow">
+          <button class="m-back" id="backBtn" style="visibility:hidden">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Back
+          </button>
+          <button class="btn btn-gold" id="nextBtn">Continue <span class="arrow">&rarr;</span></button>
+        </div>
+      </div>
+
+      <aside class="estimate" id="estimate">
+        <div class="lab">Your live estimate</div>
+        <div id="estBody">
+          <div class="empty">Pick a care type to see an indicative price range. [Add your real rates here.]</div>
+        </div>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="#D9B761" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Verified professional [describe your checks]</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="#D9B761" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> [Your replacement policy]</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="#D9B761" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> [Your support promise]</li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="how" id="how">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">How it works</span>
+      <h2>Three steps. Zero runaround.</h2>
+    </div>
+    <div class="steps3">
+      <div class="step reveal">
+        <span class="n">01</span>
+        <div class="sic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#EBD69B" stroke-width="1.7"/><path d="m16.5 16.5 4 4" stroke="#EBD69B" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+        <h3>Tell us the need</h3>
+        <p>Share the care type, shift and location. Our matcher shows matched profiles and a transparent price range instantly.</p>
+      </div>
+      <div class="step reveal">
+        <span class="n">02</span>
+        <div class="sic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 2 4 5v6c0 5 3.4 8.6 8 11 4.6-2.4 8-6 8-11V5l-8-3Z" stroke="#EBD69B" stroke-width="1.7"/><path d="m9 12 2 2 4-4" stroke="#EBD69B" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Approve your match</h3>
+        <p>Review the nurse's credentials, experience and family reviews. Confirm only when you're comfortable — no pressure, no auto-charge.</p>
+      </div>
+      <div class="step reveal">
+        <span class="n">03</span>
+        <div class="sic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M3 11.5 12 4l9 7.5" stroke="#EBD69B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 10v9h13v-9" stroke="#EBD69B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 19v-5h4v5" stroke="#EBD69B" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
+        <h3>Care begins at home</h3>
+        <p>Your professional arrives on schedule, fully briefed. Track the visit and reach your advisor anytime it's needed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="why" id="why">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Why families choose NURZING</span>
+      <h2>Built for trust, designed for ease.</h2>
+    </div>
+    <div class="bento">
+      <div class="bcard b-1 reveal">
+        <div class="bstat">[%]</div>
+        <h3>[Your verification promise]</h3>
+        <p>[Describe your actual screening process here — e.g. identity, qualification and reference checks. Do not claim police or insurance checks unless you genuinely perform them.]</p>
+      </div>
+      <div class="bcard b-2 reveal">
+        <svg class="bic" viewBox="0 0 44 44" fill="none"><rect x="3" y="3" width="38" height="38" rx="12" stroke="#0E524C" stroke-width="1.6"/><path d="M14 30V14l16 16V14" stroke="#C69C42" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>New-age, not old-school</h3>
+        <p>No paper registers, no waiting for a callback. A modern bureau experience with real people behind it — transparent, responsive and accountable.</p>
+      </div>
+      <div class="bcard b-3 reveal">
+        <svg class="bic" viewBox="0 0 44 44" fill="none"><path d="M22 5v6M22 33v6M5 22h6M33 22h6" stroke="#0E524C" stroke-width="1.8" stroke-linecap="round"/><circle cx="22" cy="22" r="9" stroke="#C69C42" stroke-width="1.8"/></svg>
+        <h3>Priced in the open</h3>
+        <p>See the rate before you book. Shift-wise, day-wise, no surprise add-ons at the end of the month.</p>
+      </div>
+      <div class="bcard b-4 reveal">
+        <div class="bstat">[SLA]</div>
+        <h3>Fastest placement, city-wide</h3>
+        <p>Urgent need? Our live availability board finds the nearest qualified professional, often within the hour.</p>
+      </div>
+      <div class="bcard b-5 reveal">
+        <svg class="bic" viewBox="0 0 44 44" fill="none"><path d="M22 39s-14-8.6-14-20a14 14 0 0 1 28 0c0 11.4-14 20-14 20Z" stroke="#0E524C" stroke-width="1.7"/><circle cx="22" cy="19" r="4.5" stroke="#C69C42" stroke-width="1.8"/></svg>
+        <h3>One advisor, always reachable</h3>
+        <p>A named care advisor stays with your case 24×7 — for changes, escalations or just reassurance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats" id="stats">
+  <div class="wrap stat-grid">
+    <div class="stat reveal"><div class="n">[000]</div><div class="l">Verified professionals</div></div>
+    <div class="stat reveal"><div class="n">[000]</div><div class="l">Care shifts delivered</div></div>
+    <div class="stat reveal"><div class="n">[0.0]<span style="font-size:1.6rem">&#9733;</span></div><div class="l">Average family rating</div></div>
+    <div class="stat reveal"><div class="n">[24×7]</div><div class="l">Live-in &amp; emergency cover</div></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi" id="reviews">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">In their words</span>
+      <h2>Families who stopped worrying.</h2>
+    </div>
+    <div class="tgrid">
+      <div class="tcard reveal">
+        <div class="tstars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="quote">[Replace with a real customer review — published only with their consent. Do not publish invented testimonials.]</p>
+        <div class="who"><span class="av">?</span><div><div class="nm">[Customer name]</div><div class="rl">[Relationship · City]</div></div></div>
+      </div>
+      <div class="tcard reveal">
+        <div class="tstars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="quote">[Replace with a real customer review — published only with their consent. Do not publish invented testimonials.]</p>
+        <div class="who"><span class="av">?</span><div><div class="nm">[Customer name]</div><div class="rl">[Relationship · City]</div></div></div>
+      </div>
+      <div class="tcard reveal">
+        <div class="tstars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p class="quote">[Replace with a real customer review — published only with their consent. Do not publish invented testimonials.]</p>
+        <div class="who"><span class="av">?</span><div><div class="nm">[Customer name]</div><div class="rl">[Relationship · City]</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="wrap faq-wrap">
+    <div class="sec-head reveal" style="margin-bottom:0">
+      <span class="eyebrow">Good to know</span>
+      <h2>Questions, answered plainly.</h2>
+      <p>Still unsure? Call us — a real advisor picks up, day or night.</p>
+      <a href="tel:+919180000000" class="btn btn-ghost" style="margin-top:1.6rem">Call a care advisor</a>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-q">How quickly can a nurse reach us? <span class="pm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-a"><p>[Describe your real response time and coverage area here. Do not promise specific times unless you can consistently meet them.]</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What exactly does "verified" mean? <span class="pm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-a"><p>[Describe your actual screening process here. Only list checks you genuinely perform — e.g. ID, qualification and reference verification.]</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How is pricing decided — any hidden charges? <span class="pm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-a"><p>[State your real pricing policy here — what is included, any fees, and your cancellation terms.]</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What if the match isn't right for us? <span class="pm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-a"><p>[State your real replacement or refund policy here.]</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Which services and cities do you cover? <span class="pm"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></button>
+        <div class="faq-a"><p>We arrange home nursing, elderly care, post-surgical recovery, mother-and-baby care, physiotherapy and attendants. [List the cities and areas you actually serve.]</p></div>
+      </div>
+    </div>
+  </div>
+</section>

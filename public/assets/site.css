@@ -479,3 +479,17 @@ html{scroll-behavior:smooth}
 .nav-links a{white-space:nowrap}
 .nav-phone{white-space:nowrap}
 @media (max-width:1180px){.nav-links{gap:1rem}.nav-links a{font-size:.8rem}}
+
+/* ---------- explore grid ---------- */
+.explore{padding:64px 0 20px;background:var(--paper)}
+.explore .wrap{max-width:1000px;margin:0 auto;padding:0 22px}
+.explore .sec-head{text-align:center;margin-bottom:28px}
+.explore h2{font-family:var(--serif);font-size:clamp(1.6rem,4.4vw,2.3rem);color:var(--teal-1000);margin:.5rem 0 0;font-weight:500}
+.explore-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.ex-card{display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid var(--line);
+  border-radius:var(--radius);padding:18px 18px 20px;transition:transform .3s,box-shadow .3s,border-color .3s}
+.ex-card b{font-family:var(--serif);font-size:1.05rem;color:var(--teal-1000);font-weight:600}
+.ex-card span{font-size:.82rem;color:var(--muted);line-height:1.45}
+.ex-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-soft);border-color:var(--gold-500)}
+@media (max-width:860px){.explore-grid{grid-template-columns:repeat(2,1fr)}}
+:root[data-theme="dark"] .ex-card{background:#0E2321}

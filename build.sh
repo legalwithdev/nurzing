@@ -6,5 +6,6 @@ rm -rf dist && mkdir -p dist/assets
   --define:process.env.NODE_ENV='"production"' --outfile=dist/assets/app.js --log-level=warning
 python3 sync_nurses.py
 python3 gen_pages.py
+python3 gen_sections.py
 cp -r public/. dist/
 echo "built: $(find dist -type f | wc -l) files, $(du -sh dist | cut -f1)"
