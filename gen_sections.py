@@ -64,7 +64,7 @@ for k, m in enumerate(marks):
     end = marks[k + 1].start() if k + 1 < len(marks) else len(MAINJS)
     blocks[m.group(1).strip()] = MAINJS[m.end():end].strip()
 
-COMMON_JS = blocks.get('nav', '') + '\n' + blocks.get('reveal', '')
+COMMON_JS = '\n'.join(x for x in [blocks.get('nav',''), blocks.get('theme (manual)',''), blocks.get('reveal','')] if x)
 
 # on /book.html, read ?n= &r= &c= and pre-select the professional's care type
 BOOK_JS = """
