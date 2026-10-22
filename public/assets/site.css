@@ -81,8 +81,8 @@ header.scrolled{background:rgba(251,248,241,.82);backdrop-filter:blur(18px);box-
 .nav{display:flex;align-items:center;justify-content:space-between;gap:2rem}
 .brand{display:flex;align-items:center;gap:.65rem;font-family:var(--serif);font-size:1.42rem;letter-spacing:.16em;font-weight:600;color:var(--teal-950)}
 .brand .mark{width:30px;height:30px;flex:0 0 30px}
-.nav-links{display:flex;gap:2rem;align-items:center}
-.nav-links a{font-size:.9rem;font-weight:500;color:var(--teal-900);opacity:.82;position:relative;padding:.3rem 0}
+.nav-links{display:flex;gap:1.25rem;align-items:center}
+.nav-links a{font-size:.85rem;font-weight:500;color:var(--teal-900);opacity:.82;position:relative;padding:.3rem 0}
 .nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:1.5px;width:0;background:var(--gold-500);transition:width .35s}
 .nav-links a:hover{opacity:1}
 .nav-links a:hover::after{width:100%}
@@ -470,3 +470,12 @@ footer{background:var(--teal-1000);color:var(--teal-200);padding:80px 0 150px;ma
 .pill.ncard-gold,.gold-badge{background:linear-gradient(135deg,#F6E7AE,#D9B761 45%,#A67C2C);
   color:#3A2B08;font-weight:800;letter-spacing:.06em;border:1px solid rgba(255,255,255,.4);
   box-shadow:0 2px 12px rgba(166,124,44,.45)}
+
+/* anchors land below the fixed header */
+section[id]{scroll-margin-top:104px}
+html{scroll-behavior:smooth}
+
+/* keep the menu on one line */
+.nav-links a{white-space:nowrap}
+.nav-phone{white-space:nowrap}
+@media (max-width:1180px){.nav-links{gap:1rem}.nav-links a{font-size:.8rem}}
