@@ -341,7 +341,7 @@ const CARE_ICONS = {
 
 /* ---------- services render ---------- */
 const svcList = document.getElementById('svcList');
-SERVICES.forEach((s,i)=>{
+if(svcList) SERVICES.forEach((s,i)=>{
   const row = document.createElement('div');
   row.className = 'svc-row reveal';
   row.innerHTML = `
@@ -362,6 +362,7 @@ SERVICES.forEach((s,i)=>{
 /* ---------- matcher ---------- */
 const careOpts = document.getElementById('careOpts');
 const shiftOpts = document.getElementById('shiftOpts');
+if(careOpts && shiftOpts){
 Object.keys(CARE_RATES).forEach(name=>{
   const b=document.createElement('button');
   b.className='opt'; b.type='button'; b.dataset.val=name;
@@ -429,6 +430,8 @@ function updateEstimate(){
     <div class="note">${state.care} &middot; ${suffix} &middot; replace with your real rates</div>`;
 }
 
+}
+
 /* ---------- faq ---------- */
 document.querySelectorAll('.faq-q').forEach(q=>{
   q.addEventListener('click',()=>{
@@ -440,6 +443,7 @@ document.querySelectorAll('.faq-q').forEach(q=>{
 });
 document.querySelector('.faq-item')?.classList.add('open');
 
+/* ---------- nav ---------- */
 /* ---------- theme (manual) ---------- */
 (function(){
   var KEY='nz-theme';
@@ -464,13 +468,14 @@ document.querySelector('.faq-item')?.classList.add('open');
   apply(stored());
 })();
 
-/* ---------- nav ---------- */
 const hdr=document.getElementById('hdr');
 addEventListener('scroll',()=>hdr.classList.toggle('scrolled',scrollY>40));
 const mm=document.getElementById('mobileMenu');
-document.getElementById('burger').addEventListener('click',()=>mm.classList.add('open'));
-document.getElementById('mmClose').addEventListener('click',()=>mm.classList.remove('open'));
-mm.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mm.classList.remove('open')));
+const burger=document.getElementById('burger');
+const mmClose=document.getElementById('mmClose');
+if(burger&&mm) burger.addEventListener('click',()=>mm.classList.add('open'));
+if(mmClose&&mm) mmClose.addEventListener('click',()=>mm.classList.remove('open'));
+if(mm) mm.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mm.classList.remove('open')));
 
 /* ---------- reveal ---------- */
 const io=new IntersectionObserver((es)=>{
@@ -486,7 +491,7 @@ const dockLinks=[...document.querySelectorAll('.dock a[data-spy]')];
 function syncShell(){
   const de=document.documentElement;
   const max=de.scrollHeight-de.clientHeight;
-  progress.style.width=(max>0?(de.scrollTop/max)*100:0)+'%';
+  if(progress) progress.style.width=(max>0?(de.scrollTop/max)*100:0)+'%';
   const probe=scrollY+innerHeight*0.42;
   let cur=dockLinks.length?dockLinks[0].dataset.spy:null;
   dockLinks.forEach(a=>{const el=document.getElementById(a.dataset.spy);if(el&&el.offsetTop<=probe)cur=a.dataset.spy;});
