@@ -89,26 +89,6 @@ These are the standing rules, implemented once so they cannot drift:
 
 ---
 
-## Deploy
 
-The backend cannot run on Cloudflare Pages (that host is static-only). Pick a Python host:
 
-1. **Render / Railway / Fly.io** — push this repo, set the start command
-   `uvicorn app.main:app --host 0.0.0.0 --port $PORT`, and set the env vars from `.env.example`.
-2. **Database** — the default is SQLite, which is fine for a single instance. For production use
-   Postgres: set `NURZING_DATABASE_URL=postgresql+psycopg://...` and add `psycopg[binary]` to
-   `requirements.txt`.
-3. **CORS** — add your site origin to `NURZING_CORS_ORIGINS`.
-4. **Point the app at it** — in `public/app/index.html`, uncomment:
-   ```
-   window.NZ_API_BASE = "https://your-api.example.com";   // inside a script tag
-   ```
-   Until that is set, the app keeps working on local demo data.
-5. **Migrations** — Alembic is wired up:
-   ```bash
-   alembic upgrade head          # apply
-   alembic revision --autogenerate -m "change"
-   ```
-6. **Outbox worker** — run `python -
-
-<!-- truncated for probe -->
+Deployment: see [DEPLOY.md](DEPLOY.md).
