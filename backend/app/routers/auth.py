@@ -13,6 +13,7 @@ from ..deps import current_user
 from ..models import OtpCode, User, UserRole
 from ..schemas import OtpRequest, OtpRequested, OtpVerify, TokenOut, UserOut
 from ..security import create_token, hash_otp, new_otp, otp_expiry
+from ..sms import get_sms
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
@@ -22,8 +23,8 @@ def request_otp(body: OtpRequest, db: Session = Depends(get_db)) -> OtpRequested
     code = new_otp()
     db.add(OtpCode(phone=body.phone, code_hash=hash_otp(body.phone, code), expires_at=otp_expiry()))
     db.commit()
-    # In production this is where the SMS provider is called. Nothing is logged
-    # or returned unless NURZING_OTP_DEBUG is explicitly on (dev only).
+    # delivered through the configured provider (console in dev, MSG91 in production)
+    get_sms().send_otp(body.phone, code)
     return OtpRequested(debug_code=code if settings.otp_debug else None)
 
 
