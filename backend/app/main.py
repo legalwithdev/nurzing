@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sqlalchemy import func, select
@@ -12,7 +12,9 @@ from . import __version__
 from .config import settings
 from .db import SessionLocal, init_db
 from .models import Professional
-from .routers import admin, applications, auth, bookings, meta, professionals, reviews
+from .ratelimit import limiter
+from .routers import (admin, applications, auth, bookings, meta, payments,
+                      professionals, reviews, uploads)
 from .schemas import Health
 
 
@@ -27,6 +29,7 @@ app = FastAPI(
     version=__version__,
     description="Professionals, bookings, verification and reviews for NURZING.",
     lifespan=lifespan,
+    dependencies=[Depends(limiter)],
 )
 
 app.add_middleware(
@@ -38,7 +41,7 @@ app.add_middleware(
 )
 
 for r in (auth.router, professionals.router, bookings.router, applications.router,
-          reviews.router, meta.router, admin.router):
+          reviews.router, meta.router, admin.router, payments.router, uploads.router):
     app.include_router(r)
 
 
