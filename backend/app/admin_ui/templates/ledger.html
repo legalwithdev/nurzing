@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Ledger</h1>
+<p class="note">Double-entry. Debits must equal credits — if this shows unbalanced, something is wrong and should be investigated before any payout.</p>
+<div class="cards">
+  <div class="card"><div class="n">{{ money(tb.total_debit_paise) }}</div><div class="l">Total debit</div></div>
+  <div class="card"><div class="n">{{ money(tb.total_credit_paise) }}</div><div class="l">Total credit</div></div>
+  <div class="card"><div class="n">{{ 'balanced' if tb.balanced else 'NOT balanced' }}</div><div class="l">Status</div></div>
+  <div class="card"><div class="n">{{ money(payable) }}</div><div class="l">Owed to professionals</div></div>
+</div>
+<h2>Accounts</h2>
+<table>
+  <tr><th>Account</th><th>Debit</th><th>Credit</th><th>Balance</th></tr>
+  {% for name, a in tb.accounts.items() %}
+  <tr><td>{{ name }}</td><td>{{ money(a.debit_paise) }}</td><td>{{ money(a.credit_paise) }}</td><td>{{ money(a.balance_paise) }}</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}
