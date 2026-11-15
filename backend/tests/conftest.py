@@ -10,7 +10,12 @@ os.environ.setdefault("NURZING_ADMIN_PHONES", "+919000000000")
 
 from fastapi.testclient import TestClient  # noqa: E402
 
+from app.config import settings  # noqa: E402
 from app.db import Base, engine  # noqa: E402
+
+# keep the limiter out of the way except in the dedicated test
+settings.rate_limit_per_minute = 100000
+settings.rate_limit_auth_per_minute = 100000
 from app.main import app  # noqa: E402
 from app.seed import run as seed_run  # noqa: E402
 
