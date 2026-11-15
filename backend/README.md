@@ -68,6 +68,37 @@ These are the standing rules, implemented once so they cannot drift:
 | POST | `/api/professionals/{id}/reviews` | auth + consent required |
 | POST | `/api/bookings/quote` | server-side price |
 | POST | `/api/bookings` | auth required |
-| GET | `/api/bookings` | my bo
+| GET | `/api/bookings` | my bookings (auth) |
+| POST | `/api/auth/request-otp` | phone + OTP |
+| POST | `/api/auth/verify-otp` | returns a JWT |
+| GET | `/api/auth/me` | current user |
+| POST | `/api/applications` | **public** — a professional lists themselves |
+| GET | `/api/applications` | admin only |
+| POST | `/api/applications/{id}/verify` | admin only — approve/reject |
+| GET | `/api/admin/bookings` | admin only |
+| PATCH | `/api/admin/bookings/{id}/status` | admin only |
+| POST | `/api/admin/bookings/{id}/assign` | admin only |
+| GET | `/api/admin/stats` | dashboard counters |
+| GET/PATCH | `/api/admin/professionals` `/{id}` | admin only |
+| POST | `/api/admin/outbox/drain` | deliver queued SMS now |
+| POST | `/api/payments/order` | create a provider order |
+| POST | `/api/payments/verify` | verify the signature, confirm the booking |
+| POST | `/api/payments/webhook` | provider callback (signature-checked) |
+| POST | `/api/uploads` | verification document (content-sniffed) |
+| GET | `/api/uploads/{owner_type}/{owner_id}` | documents for a record |
+
+---
+
+## Deploy
+
+The backend cannot run on Cloudflare Pages (that host is static-only). Pick a Python host:
+
+1. **Render / Railway / Fly.io** — push this repo, set the start command
+   `uvicorn app.main:app --host 0.0.0.0 --port $PORT`, and set the env vars from `.env.example`.
+2. **Database** — the default is SQLite, which is fine for a single instance. For production use
+   Postgres: set `NURZING_DATABASE_URL=postgresql+psycopg://...` and add `psycopg[binary]` to
+   `requirements.txt`.
+3. **CORS** — add your site origin to `NURZING_CORS_ORIGINS`.
+4. **Point the ap
 
 <!-- truncated for probe -->
