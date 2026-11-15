@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Professionals</h1>
+<p class="note">Tier and the GOLD badge are computed from each record — they cannot be set by hand.</p>
+<table>
+  <tr><th>Name</th><th>Designation (verbatim)</th><th>Qualification</th><th>Registration</th><th>Tier</th><th>Rate</th><th>Active</th><th>Update</th></tr>
+  {% for p in rows %}
+  <tr>
+    <td>{{ p.name }}</td>
+    <td>{{ p.designation }}</td>
+    <td>{{ p.qualification or '—' }}</td>
+    <td>{{ p.reg_type }}{% if p.reg_verified %} <span class="pill ok">verified</span>{% endif %}</td>
+    <td>{{ p.tier }}{% if p.gold %} <span class="pill warn">GOLD</span>{% endif %}</td>
+    <td>{{ money(p.rate_paise) }}</td>
+    <td>{{ 'yes' if p.active else 'no' }}</td>
+    <td>
+      <form class="inline" method="post" action="/admin/professionals/{{ p.id }}">
+        <input type="text" name="rate_paise" value="{{ p.rate_paise }}" style="width:88px" />
+        <select name="active"><option value="1" {{ 'selected' if p.active }}>active</option><option value="0" {{ 'selected' if not p.active }}>paused</option></select>
+        <button type="submit">Save</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
