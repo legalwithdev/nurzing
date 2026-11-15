@@ -109,6 +109,6 @@ The backend cannot run on Cloudflare Pages (that host is static-only). Pick a Py
    alembic upgrade head          # apply
    alembic revision --autogenerate -m "change"
    ```
-6. **Outbox worker**
+6. **Outbox worker** — run `pytho
 
 <!-- truncated for probe -->
