@@ -1,4 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
+import { getCachedNurse } from '../lib/api.js';
 import { getNurse, isGold } from '../data/nurses.js';
 import Stars from '../components/Stars.jsx';
 import { BackIcon, PinIcon, CheckIcon } from '../lib/icons.jsx';
@@ -6,7 +7,7 @@ import { inr } from '../lib/pricing.js';
 
 export default function NurseProfile() {
   const { id } = useParams();
-  const n = getNurse(id);
+  const n = getNurse(id) || getCachedNurse(id);
   if (!n) {
     return (
       <div className="empty">

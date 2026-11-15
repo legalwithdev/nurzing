@@ -103,6 +103,11 @@ var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('cont
   .slide{padding:32px 18px}
 }
 </style>
+<link rel="manifest" href="/manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="NURZING" />
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon-180.png" />
 </head>
 <body>
 
@@ -582,5 +587,6 @@ syncShell();
 
 })();
 </script>
+<script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}</script>
 </body>
 </html>

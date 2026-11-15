@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { getCachedNurse } from '../lib/api.js';
 import { getNurse } from '../data/nurses.js';
 import { SHIFTS, quote, inr } from '../lib/pricing.js';
 import { useBookings } from '../lib/store.jsx';
@@ -7,7 +8,7 @@ import { BackIcon, CheckIcon } from '../lib/icons.jsx';
 
 export default function BookingFlow() {
   const { id } = useParams();
-  const n = getNurse(id);
+  const n = getNurse(id) || getCachedNurse(id);
   const nav = useNavigate();
   const { addBooking, toast } = useBookings();
 

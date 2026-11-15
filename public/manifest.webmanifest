@@ -1,0 +1,26 @@
+{
+  "name": "NURZING — Home Nursing & Attendants",
+  "short_name": "NURZING",
+  "description": "Nurses and healthcare attendants at your doorstep — booked in minutes, at prices you can see upfront.",
+  "id": "/",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#FBF8F1",
+  "theme_color": "#062A28",
+  "lang": "en-IN",
+  "dir": "ltr",
+  "categories": ["health", "medical", "lifestyle"],
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Book a nurse", "short_name": "Book", "url": "/book.html" },
+    { "name": "Services", "short_name": "Services", "url": "/services.html" },
+    { "name": "My profile", "short_name": "Profile", "url": "/app/account" }
+  ]
+}

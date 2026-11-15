@@ -1,17 +1,30 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { NURSES, CITIES } from '../data/nurses.js';
 import { CARE_TYPES } from '../lib/pricing.js';
 import NurseCard from '../components/NurseCard.jsx';
 import { SearchIcon } from '../lib/icons.jsx';
+import { api, apiEnabled, toLocalShape } from '../lib/api.js';
 
 export default function Discover() {
   const [q, setQ] = useState('');
   const [care, setCare] = useState('All');
   const [city, setCity] = useState('All');
   const [sort, setSort] = useState('rating');
+  // live records from the Python backend when one is configured; otherwise demo data
+  const [remote, setRemote] = useState(null);
+  const [apiNote, setApiNote] = useState('');
+  useEffect(() => {
+    if (!apiEnabled()) return;
+    let alive = true;
+    api.professionals({ limit: 100 })
+      .then((r) => { if (alive) { setRemote(r.items.map(toLocalShape)); setApiNote(''); } })
+      .catch((e) => { if (alive) { setRemote(null); setApiNote('Live data unavailable (' + e.message + ') — showing demo records.'); } });
+    return () => { alive = false; };
+  }, []);
+  const SOURCE = remote || NURSES;
 
   const list = useMemo(() => {
-    let r = NURSES.filter((n) => {
+    let r = SOURCE.filter((n) => {
       if (care !== 'All' && !n.careTypes.includes(care)) return false;
       if (city !== 'All' && n.city !== city) return false;
       if (q) {
@@ -26,7 +39,7 @@ export default function Discover() {
     if (sort === 'price') r = [...r].sort((a, b) => tier(a) - tier(b) || a.rate - b.rate);
     if (sort === 'distance') r = [...r].sort((a, b) => tier(a) - tier(b) || a.distanceKm - b.distanceKm);
     return r;
-  }, [q, care, city, sort]);
+  }, [q, care, city, sort, SOURCE]);
 
   return (
     <div className="fade">
@@ -36,7 +49,10 @@ export default function Discover() {
         Browse nurses and attendants, see transparent daily rates, and book in minutes.
       </p>
 
-      <p className="muted" style={{ fontSize: '.78rem', marginTop: 8 }}>Showing sample professionals for demo — replace with your real records before launch.</p>
+      <p className="muted" style={{ fontSize: '.78rem', marginTop: 8 }}>
+        {remote ? 'Live records from the NURZING API.' : 'Showing sample professionals for demo — replace with your real records before launch.'}
+      </p>
+      {apiNote && <p className="muted" style={{ fontSize: '.78rem', marginTop: 4 }}>{apiNote}</p>}
 
       <p className="muted" style={{ fontSize: '.78rem', marginTop: 6 }}>
         Priority order: <b>B.Sc Nursing + RN&amp;RM + experience + a specialisation</b> is shown first (highest authority), then RN&amp;RM nurses with GNM, then other licensed professions, then non-medical support roles.
