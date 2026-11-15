@@ -13,8 +13,10 @@ from .config import settings
 from .db import SessionLocal, init_db
 from .models import Professional
 from .ratelimit import limiter
-from .routers import (admin, applications, auth, bookings, meta, payments,
+from .admin_ui.routes import router as admin_ui
+from .routers import (admin, applications, auth, bookings, finance, meta, payments,
                       professionals, reviews, uploads)
+from . import tasks  # noqa: F401  (registers background jobs)
 from .schemas import Health
 
 
@@ -41,7 +43,8 @@ app.add_middleware(
 )
 
 for r in (auth.router, professionals.router, bookings.router, applications.router,
-          reviews.router, meta.router, admin.router, payments.router, uploads.router):
+          reviews.router, meta.router, admin.router, payments.router, uploads.router,
+          finance.router, admin_ui):
     app.include_router(r)
 
 
