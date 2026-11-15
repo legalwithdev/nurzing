@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Sign in — NURZING admin{% endblock %}
+{% block body %}
+<h1>Admin sign-in</h1>
+{% if error %}<p class="note bad">{{ error }}</p>{% endif %}
+<div class="card" style="max-width:420px">
+  <form method="post" action="/admin/login">
+    <label class="muted">Admin phone</label><br />
+    <input type="tel" name="phone" value="{{ phone or '' }}" placeholder="+91..." required style="width:100%;margin:.4rem 0 .9rem" />
+    {% if stage == 'otp' %}
+      <label class="muted">OTP (check the server log in dev)</label><br />
+      <input type="text" name="code" placeholder="6 digits" required style="width:100%;margin:.4rem 0 .9rem" />
+    {% endif %}
+    <button class="gold" type="submit">{{ 'Verify' if stage == 'otp' else 'Send OTP' }}</button>
+  </form>
+</div>
+<p class="muted" style="margin-top:14px">Only numbers listed in NURZING_ADMIN_PHONES can sign in.</p>
+{% endblock %}
