@@ -178,3 +178,74 @@ class MetaOut(BaseModel):
     shifts: list[str]
     cities: list[str]
     gold_min_years: int
+
+
+# ---------------------------------------------------------------- payments
+class PaymentOrderIn(BaseModel):
+    booking_id: int
+
+
+class PaymentOrderOut(BaseModel):
+    payment_id: int
+    provider: str
+    provider_order_id: str
+    amount_paise: int
+    currency: str
+    public_key: str | None = None
+
+
+class PaymentVerifyIn(BaseModel):
+    payment_id: int
+    provider_payment_id: str
+    signature: str
+
+
+class PaymentOut(BaseModel):
+    id: int
+    booking_id: int
+    provider: str
+    status: str
+    amount_paise: int
+    currency: str
+    provider_order_id: str
+    provider_payment_id: str | None
+    signature_verified: bool
+    created_at: dt.datetime
+
+
+# ---------------------------------------------------------------- documents
+class DocumentOut(BaseModel):
+    id: int
+    owner_type: str
+    owner_id: int
+    kind: str
+    url: str
+    content_type: str
+    size: int
+    verified: bool
+    uploaded_at: dt.datetime
+
+
+# ---------------------------------------------------------------- admin
+class AdminStats(BaseModel):
+    professionals: int
+    active_professionals: int
+    gold_professionals: int
+    pending_applications: int
+    bookings_total: int
+    bookings_requested: int
+    revenue_paid_paise: int
+    outbox_pending: int
+
+
+class ProfessionalUpdate(BaseModel):
+    rate_paise: int | None = Field(default=None, ge=0)
+    available_today: bool | None = None
+    active: bool | None = None
+    reg_verified: bool | None = None
+    designation: str | None = Field(default=None, min_length=2, max_length=120)
+    years: int | None = Field(default=None, ge=0, le=60)
+
+
+class AssignIn(BaseModel):
+    professional_id: int
