@@ -2,3 +2,11 @@ node_modules
 preview
 *.log
 .DS_Store
+
+# python / backend
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+*.db
+backend/.env
