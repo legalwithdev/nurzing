@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Bookings</h1>
+<p class="muted">{{ rows|length }} shown</p>
+<table>
+  <tr><th>Ref</th><th>Professional</th><th>Care / shift</th><th>Start</th><th>Amount</th><th>Status</th><th>Change</th></tr>
+  {% for b in rows %}
+  <tr>
+    <td>{{ b.reference }}</td>
+    <td>{{ b.professional_name }}<br /><span class="muted">{{ b.professional_designation }}</span></td>
+    <td>{{ b.care_type }}<br /><span class="muted">{{ b.shift }} · {{ b.days }}d</span></td>
+    <td>{{ b.start_date }}</td>
+    <td>{{ money(b.amount_paise) }}</td>
+    <td><span class="pill {{ 'ok' if b.status=='completed' else 'warn' if b.status=='requested' else '' }}">{{ b.status }}</span></td>
+    <td>
+      <form class="inline" method="post" action="/admin/bookings/{{ b.id }}/status">
+        <select name="status">
+          {% for s in statuses %}<option value="{{ s }}" {{ 'selected' if s==b.status }}>{{ s }}</option>{% endfor %}
+        </select>
+        <button type="submit">Save</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
