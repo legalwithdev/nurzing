@@ -10,6 +10,7 @@ from ..db import get_db
 from ..deps import current_user
 from ..models import Booking, BookingStatus, Payment, PaymentStatus, User
 from ..notifications import enqueue
+from .. import ledger
 from ..payments import PaymentError, get_provider
 from ..schemas import PaymentOrderIn, PaymentOrderOut, PaymentOut, PaymentVerifyIn
 
@@ -70,6 +71,8 @@ def verify(body: PaymentVerifyIn, db: Session = Depends(get_db), user: User = De
     pay.signature_verified = True
     pay.paid_at = dt.datetime.now(dt.timezone.utc)
     booking.status = BookingStatus.confirmed
+    ledger.post_payment(db, booking_id=booking.id, payment_id=pay.id,
+                        amount_paise=pay.amount_paise, gst_paise=0)
     db.commit()
     db.refresh(pay)
     return _out(pay)
