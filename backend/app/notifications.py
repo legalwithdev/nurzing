@@ -22,13 +22,20 @@ TEMPLATES = {
     "application_received": "NURZING: we received your listing request. Our team will verify your details.",
     "application_verified": "NURZING: your profile is verified and live. You can now receive care requests.",
     "application_rejected": "NURZING: we could not verify your listing. Our team will contact you.",
+    "booking_reminder": "NURZING: reminder — your care booking {reference} starts on {date}.",
+    "booking_followup": "NURZING: how did the care go for booking {reference}? Reply and tell us.",
+    "payment_received": "NURZING: payment received for booking {reference}. Thank you.",
+    "refund_processed": "NURZING: refund of {amount} for booking {reference} has been processed.",
 }
 
 
 def render(template: str, **ctx) -> str:
     if template not in TEMPLATES:
         raise ValueError(f"unknown notification template: {template}")
-    return TEMPLATES[template].format(**ctx)
+    try:
+        return TEMPLATES[template].format(**ctx)
+    except KeyError as exc:
+        raise ValueError(f"template {template!r} is missing {exc}") from None
 
 
 def enqueue(db: Session, *, phone: str, template: str, **ctx) -> OutboxMessage:
