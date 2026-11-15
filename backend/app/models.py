@@ -204,3 +204,123 @@ class OutboxMessage(Base):
     last_error: Mapped[str | None] = mapped_column(String(500))
     created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
     sent_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class LedgerAccount(str, enum.Enum):
+    customer_receivable = "customer_receivable"
+    cash = "cash"
+    platform_revenue = "platform_revenue"
+    professional_payable = "professional_payable"
+    gst_payable = "gst_payable"
+    refunds = "refunds"
+
+
+class LedgerEntry(Base):
+    """Double-entry ledger. Every booking posts a balanced set of rows."""
+
+    __tablename__ = "ledger_entries"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    booking_id: Mapped[int | None] = mapped_column(ForeignKey("bookings.id"), index=True)
+    payment_id: Mapped[int | None] = mapped_column(ForeignKey("payments.id"), index=True)
+    account: Mapped[LedgerAccount] = mapped_column(Enum(LedgerAccount), index=True)
+    debit_paise: Mapped[int] = mapped_column(Integer, default=0)
+    credit_paise: Mapped[int] = mapped_column(Integer, default=0)
+    memo: Mapped[str | None] = mapped_column(String(200))
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=utcnow, index=True)
+
+
+class RefundStatus(str, enum.Enum):
+    requested = "requested"
+    approved = "approved"
+    processed = "processed"
+    rejected = "rejected"
+
+
+class Refund(Base):
+    __tablename__ = "refunds"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    booking_id: Mapped[int] = mapped_column(ForeignKey("bookings.id"), index=True)
+    payment_id: Mapped[int | None] = mapped_column(ForeignKey("payments.id"))
+    amount_paise: Mapped[int] = mapped_column(Integer)
+    reason: Mapped[str] = mapped_column(String(300))
+    status: Mapped[RefundStatus] = mapped_column(Enum(RefundStatus), default=RefundStatus.requested)
+    requested_by: Mapped[int | None] = mapped_column(ForeignKey("users.id"))
+    approved_by: Mapped[str | None] = mapped_column(String(20))
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    processed_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class Invoice(Base):
+    __tablename__ = "invoices"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    number: Mapped[str] = mapped_column(String(30), unique=True, index=True)
+    booking_id: Mapped[int] = mapped_column(ForeignKey("bookings.id"), index=True)
+    amount_paise: Mapped[int] = mapped_column(Integer)
+    gst_paise: Mapped[int] = mapped_column(Integer, default=0)
+    issued_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class AuditLog(Base):
+    __tablename__ = "audit_log"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    actor: Mapped[str] = mapped_column(String(60), index=True)     # phone or "system"
+    action: Mapped[str] = mapped_column(String(60), index=True)
+    entity: Mapped[str] = mapped_column(String(40), index=True)
+    entity_id: Mapped[str | None] = mapped_column(String(40))
+    detail: Mapped[dict] = mapped_column(JSON, default=dict)
+    ip: Mapped[str | None] = mapped_column(String(60))
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=utcnow, index=True)
+
+
+class DailyRollup(Base):
+    __tablename__ = "daily_rollups"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    day: Mapped[dt.date] = mapped_column(Date, unique=True, index=True)
+    bookings_created: Mapped[int] = mapped_column(Integer, default=0)
+    bookings_completed: Mapped[int] = mapped_column(Integer, default=0)
+    gmv_paise: Mapped[int] = mapped_column(Integer, default=0)
+    revenue_paise: Mapped[int] = mapped_column(Integer, default=0)
+    refunds_paise: Mapped[int] = mapped_column(Integer, default=0)
+    new_users: Mapped[int] = mapped_column(Integer, default=0)
+    computed_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class ScheduledNotification(Base):
+    __tablename__ = "scheduled_notifications"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    phone: Mapped[str] = mapped_column(String(20), index=True)
+    template: Mapped[str] = mapped_column(String(40))
+    payload: Mapped[dict] = mapped_column(JSON, default=dict)
+    run_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), index=True)
+    status: Mapped[str] = mapped_column(String(12), default="pending", index=True)
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class JobStatus(str, enum.Enum):
+    queued = "queued"
+    running = "running"
+    done = "done"
+    failed = "failed"
+
+
+class Job(Base):
+    """Durable background job. Works without Redis; Redis is used when configured."""
+
+    __tablename__ = "jobs"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(60), index=True)
+    payload: Mapped[dict] = mapped_column(JSON, default=dict)
+    status: Mapped[JobStatus] = mapped_column(Enum(JobStatus), default=JobStatus.queued, index=True)
+    run_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=utcnow, index=True)
+    attempts: Mapped[int] = mapped_column(Integer, default=0)
+    max_attempts: Mapped[int] = mapped_column(Integer, default=3)
+    last_error: Mapped[str | None] = mapped_column(String(500))
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    finished_at: Mapped[dt.datetime | None] = mapped_column(DateTime(timezone=True))
