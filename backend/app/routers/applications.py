@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 from ..db import get_db
 from ..deps import require_admin
 from ..models import ApplicationStatus, Professional, ProfessionalApplication, User
+from ..notifications import enqueue
 from ..schemas import ApplicationIn, ApplicationOut
 
 router = APIRouter(prefix="/api/applications", tags=["applications"])
@@ -29,6 +30,7 @@ def apply(body: ApplicationIn, db: Session = Depends(get_db)) -> ApplicationOut:
     """Public endpoint — any professional can list themselves."""
     a = ProfessionalApplication(**body.model_dump())
     db.add(a)
+    enqueue(db, phone=a.phone, template="application_received")
     db.commit()
     db.refresh(a)
     return _out(a)
@@ -78,6 +80,8 @@ def verify_application(
             rating=0.0, reviews_count=0, available_today=False, distance_km=0.0,
             care_types=a.care_types or [], languages=[], about=a.notes,
         ))
+    enqueue(db, phone=a.phone,
+            template="application_verified" if approve else "application_rejected")
     db.commit()
     db.refresh(a)
     return _out(a)
