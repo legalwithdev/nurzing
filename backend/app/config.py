@@ -33,6 +33,18 @@ class Settings(BaseSettings):
     max_upload_bytes: int = 5 * 1024 * 1024  # 5 MB
     allowed_upload_types: str = "image/jpeg,image/png,application/pdf"
 
+    # storage backend
+    storage_backend: str = "local"            # local | s3
+    s3_bucket: str = ""
+    s3_region: str = "ap-south-1"
+    s3_endpoint: str = ""
+    s3_access_key: str = ""
+    s3_secret_key: str = ""
+    s3_public_base: str = ""
+
+    # queue
+    redis_url: str = ""                       # empty -> database-backed queue
+
     # rate limiting
     rate_limit_per_minute: int = 60
     rate_limit_auth_per_minute: int = 10
