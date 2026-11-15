@@ -89,6 +89,12 @@ These are the standing rules, implemented once so they cannot drift:
 
 ---
 
+---
 
+---
 
-Deployment: see [DEPLOY.md](DEPLOY.md).
+## Deploy
+
+The API needs a Python host — Cloudflare Pages is static-only and cannot run it. Set the
+NURZING_* variables on that host, apply the Alembic migration, run the outbox worker on a
+schedule, and set the window.NZ_API_BASE global in the app shell so the site talks to it.
