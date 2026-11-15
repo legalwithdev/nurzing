@@ -99,6 +99,10 @@ The backend cannot run on Cloudflare Pages (that host is static-only). Pick a Py
    Postgres: set `NURZING_DATABASE_URL=postgresql+psycopg://...` and add `psycopg[binary]` to
    `requirements.txt`.
 3. **CORS** — add your site origin to `NURZING_CORS_ORIGINS`.
-4. **Point the ap
+4. **Point the app at it** — in `public/app/index.html`, uncomment:
+   ```
+   window.NZ_API_BASE = "https://your-api.example.com";   // inside a script tag
+   ```
+   Until that is set, the app keeps working on local de
 
 <!-- truncated for probe -->
