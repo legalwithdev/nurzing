@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 from ..db import get_db
 from ..deps import current_user
 from ..models import Booking, BookingStatus, Professional, User
+from ..notifications import enqueue
 from ..pricing import quote
 from ..schemas import BookingIn, BookingOut, QuoteIn, QuoteOut
 
@@ -56,6 +57,8 @@ def create_booking(body: BookingIn, db: Session = Depends(get_db), user: User = 
         status=BookingStatus.requested,
     )
     db.add(b)
+    enqueue(db, phone=b.phone, template="booking_received",
+            reference=ref, date=str(body.start_date))
     db.commit()
     db.refresh(b)
     return _to_out(b, p)
