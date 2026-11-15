@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Audit log</h1>
+<table>
+  <tr><th>When</th><th>Actor</th><th>Action</th><th>Entity</th><th>Detail</th><th>IP</th></tr>
+  {% for a in rows %}
+  <tr>
+    <td>{{ a.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+    <td>{{ a.actor }}</td>
+    <td>{{ a.action }}</td>
+    <td>{{ a.entity }}{% if a.entity_id %} #{{ a.entity_id }}{% endif %}</td>
+    <td class="muted">{{ a.detail }}</td>
+    <td class="muted">{{ a.ip or '' }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
