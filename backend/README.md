@@ -103,6 +103,9 @@ The backend cannot run on Cloudflare Pages (that host is static-only). Pick a Py
    ```
    window.NZ_API_BASE = "https://your-api.example.com";   // inside a script tag
    ```
-   Until that is set, the app keeps working on local de
+   Until that is set, the app keeps working on local demo data.
+5. **Migrations** — Alembic is wired up:
+   ```bash
+   alembic upgrade head          # apply
 
 <!-- truncated for probe -->
