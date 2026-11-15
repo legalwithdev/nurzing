@@ -118,7 +118,11 @@ def page(slug, title, desc, section_html, extra_js):
 <meta name="twitter:description" content="%s" />
 <meta name="twitter:image" content="%s/og-image.png" />
 <link rel="icon" href="/favicon.svg" />
-<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/manifest.webmanifest" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="NURZING" />
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon-180.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -134,6 +138,7 @@ def page(slug, title, desc, section_html, extra_js):
 %s
 </main>
 %s
+<script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}</script>
 %s
 </body>
 </html>
