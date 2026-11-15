@@ -409,6 +409,7 @@ nextBtn.addEventListener('click',()=>{
   if(state.step===3){
     const phone=document.getElementById('phone').value.trim();
     if(phone.length<8){document.getElementById('phone').focus();document.getElementById('phone').style.borderColor='#e08080';return;}
+    if(window.submitRequest){window.submitRequest();return;}
     showStep(4);return;
   }
   showStep(state.step+1);
