@@ -162,8 +162,9 @@ var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('cont
             <div class="tick">
               <svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="#062A28" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
-            <h3>Request received.</h3>
-            <p>A NURZING care advisor will call you within 15 minutes with matched profiles. Keep your phone handy.</p>
+            <h3 id="successTitle">Request received.</h3>
+            <p id="successMsg">A NURZING care advisor will call you with matched profiles. Keep your phone handy.</p>
+            <div id="successBox" class="success-box"></div>
           </div>
         </div>
 
@@ -313,6 +314,7 @@ nextBtn.addEventListener('click',()=>{
   if(state.step===3){
     const phone=document.getElementById('phone').value.trim();
     if(phone.length<8){document.getElementById('phone').focus();document.getElementById('phone').style.borderColor='#e08080';return;}
+    if(window.submitRequest){window.submitRequest();return;}
     showStep(4);return;
   }
   showStep(state.step+1);
@@ -352,6 +354,82 @@ function updateEstimate(){
   var want = MAP[cr] || cr;
   var opts = document.querySelectorAll('#careOpts .opt');
   for(var i=0;i<opts.length;i++){ if(opts[i].textContent.trim() === want){ opts[i].click(); break; } }
+})();
+
+/* submit the care request to /api/bookings (Pages Function + D1, free tier) */
+var NZ_WHATSAPP = '919180000000';   /* set your number; the API can override this */
+(function(){
+  function val(id){ var el=document.getElementById(id); return el ? el.value : ''; }
+  function picked(sel){ var el=document.querySelector(sel); return el ? el.textContent.trim() : ''; }
+  function goStep(n){
+    document.querySelectorAll('.mstep').forEach(function(m){
+      m.classList.toggle('on', String(m.dataset.step) === String(n));
+    });
+    document.querySelectorAll('#dots i').forEach(function(d,i){ d.classList.toggle('on', i < Math.min(n,3)); });
+    var nav=document.getElementById('navRow'); if(nav) nav.style.display='none';
+  }
+  function renderResult(out){
+    var box=document.getElementById('successBox');
+    var title=document.getElementById('successTitle');
+    var msg=document.getElementById('successMsg');
+    if(!box) return;
+    var ref=(out&&out.reference)||'';
+    var wa=(out&&out.whatsapp)||'';
+    var stored=!!(out&&out.stored);
+    if(out&&out.ok){
+      if(title) title.textContent = stored ? 'Request received.' : 'Almost done.';
+      if(msg) msg.textContent = stored
+        ? 'Your request is saved. A NURZING care advisor will call you shortly.'
+        : 'We could not save it automatically — please send it on WhatsApp so we do not miss you.';
+    }else{
+      if(title) title.textContent='Please send it on WhatsApp';
+      if(msg){
+        var e=(out&&out.error)?String(out.error):'';
+        msg.textContent = (e==='network' || !e)
+          ? 'We could not reach our servers just now. Please send it on WhatsApp or call — we will pick it up.'
+          : e;
+      }
+    }
+    box.innerHTML='';
+    if(ref){ var r=document.createElement('div'); r.className='ref-line';
+      r.innerHTML='Reference <b>'+ref+'</b>'; box.appendChild(r); }
+    if(!wa){
+      var lines=['New NURZING care request'+(ref?' '+ref:''),
+        'Care: '+(picked('#careOpts .opt.sel')||'Home Nursing'),
+        'Shift: '+(picked('#shiftOpts .opt.sel')||'12-hour day shift'),
+        'Days: '+(val('days')||'1'),
+        'Where: '+(val('city')||'-'),
+        'Phone: '+(val('phone')||'-')];
+      wa='https://wa.me/'+NZ_WHATSAPP+'?text='+encodeURIComponent(lines.join(String.fromCharCode(10)));
+    }
+    var a=document.createElement('a'); a.className='btn btn-gold wa-btn';
+    a.href=wa; a.target='_blank'; a.rel='noopener';
+    a.textContent='Send on WhatsApp →'; box.appendChild(a);
+    var tel=document.createElement('a'); tel.className='tel-line';
+    tel.href='tel:+'+NZ_WHATSAPP; tel.textContent='or call +'+NZ_WHATSAPP;
+    box.appendChild(tel);
+  }
+  window.submitRequest = function(){
+    var btn=document.getElementById('nextBtn');
+    var label=btn ? btn.innerHTML : '';
+    if(btn){ btn.disabled=true; btn.textContent='Sending…'; }
+    var payload={
+      care_type: picked('#careOpts .opt.sel') || 'Home Nursing',
+      shift: picked('#shiftOpts .opt.sel') || '12-hour day shift',
+      days: parseInt(val('days'),10)||1,
+      city: val('city'),
+      phone: val('phone'),
+      notes: 'When: ' + (val('when')||'as soon as possible')
+    };
+    fetch('/api/bookings',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)})
+      .then(function(res){ return res.json(); })
+      .catch(function(){ return {ok:false,error:'network'}; })
+      .then(function(out){
+        if(btn){ btn.disabled=false; btn.innerHTML=label; }
+        renderResult(out);
+        goStep(4);
+      });
+  };
 })();
 
 (function(){
