@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Dashboard</h1>
+<div class="cards">
+  <div class="card"><div class="n">{{ s.professionals }}</div><div class="l">Professionals</div></div>
+  <div class="card"><div class="n">{{ s.gold_professionals }}</div><div class="l">Gold tier</div></div>
+  <div class="card"><div class="n">{{ s.pending_applications }}</div><div class="l">Pending applications</div></div>
+  <div class="card"><div class="n">{{ s.bookings_total }}</div><div class="l">Bookings</div></div>
+  <div class="card"><div class="n">{{ s.bookings_requested }}</div><div class="l">Awaiting confirmation</div></div>
+  <div class="card"><div class="n">{{ money(s.revenue_paid_paise) }}</div><div class="l">Payments captured</div></div>
+  <div class="card"><div class="n">{{ s.outbox_pending }}</div><div class="l">SMS in outbox</div></div>
+</div>
+
+<h2>Last {{ t.days }} days</h2>
+<div class="cards">
+  <div class="card"><div class="n">{{ t.bookings_created }}</div><div class="l">Bookings created</div></div>
+  <div class="card"><div class="n">{{ money(t.gmv_paise) }}</div><div class="l">GMV</div></div>
+  <div class="card"><div class="n">{{ money(t.revenue_paise) }}</div><div class="l">Platform revenue</div></div>
+  <div class="card"><div class="n">{{ money(t.refunds_paise) }}</div><div class="l">Refunds</div></div>
+  <div class="card"><div class="n">{{ t.new_users }}</div><div class="l">New users</div></div>
+</div>
+
+<h2>Daily</h2>
+<table>
+  <tr><th>Day</th><th>Created</th><th>Completed</th><th>GMV</th><th>Revenue</th><th>Refunds</th></tr>
+  {% for d in series|reverse %}
+  <tr>
+    <td>{{ d.day }}</td><td>{{ d.bookings_created }}</td><td>{{ d.bookings_completed }}</td>
+    <td>{{ money(d.gmv_paise) }}</td><td>{{ money(d.revenue_paise) }}</td><td>{{ money(d.refunds_paise) }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h2>Recent bookings</h2>
+<table>
+  <tr><th>Ref</th><th>Professional</th><th>Care</th><th>Amount</th><th>Status</th></tr>
+  {% for b in bookings %}
+  <tr>
+    <td>{{ b.reference }}</td><td>{{ b.professional_name }}</td><td>{{ b.care_type }}</td>
+    <td>{{ money(b.amount_paise) }}</td><td><span class="pill">{{ b.status }}</span></td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
