@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{% block title %}NURZING admin{% endblock %}</title>
+<style>
+  :root{--ink:#0A1615;--muted:#5E6B68;--line:rgba(10,64,60,.14);--teal:#073331;--gold:#C69C42;--bg:#FBF8F1}
+  *{box-sizing:border-box}
+  body{margin:0;font:15px/1.5 Inter,system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--bg)}
+  header{background:var(--teal);color:#F5EFE3;padding:14px 22px;display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+  header b{font-family:Georgia,serif;letter-spacing:.14em;font-size:1.05rem}
+  header a{color:#EBD69B;text-decoration:none;font-size:.86rem;opacity:.85}
+  header a:hover,header a.on{opacity:1;border-bottom:1px solid var(--gold)}
+  main{max-width:1080px;margin:0 auto;padding:26px 18px 60px}
+  h1{font-family:Georgia,serif;font-size:1.6rem;margin:.2rem 0 1rem;font-weight:600}
+  h2{font-size:1.05rem;margin:1.6rem 0 .6rem}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+  .card .n{font-family:Georgia,serif;font-size:1.5rem}
+  .card .l{font-size:.76rem;color:var(--muted);margin-top:2px}
+  table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);font-size:.86rem;vertical-align:top}
+  th{background:rgba(10,64,60,.05);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+  tr:last-child td{border-bottom:0}
+  .pill{display:inline-block;padding:.15rem .5rem;border-radius:999px;font-size:.72rem;font-weight:600;background:rgba(10,64,60,.08)}
+  .ok{background:rgba(46,138,126,.16);color:#0E524C}
+  .warn{background:rgba(198,156,66,.22);color:#7a5a12}
+  .bad{background:rgba(180,60,60,.15);color:#8a2b2b}
+  form.inline{display:inline}
+  button{border:1px solid var(--line);background:#fff;border-radius:9px;padding:.35rem .7rem;font:inherit;font-size:.8rem;cursor:pointer}
+  button.gold{background:linear-gradient(135deg,#EBD69B,#C69C42);border-color:#C69C42;font-weight:700}
+  .muted{color:var(--muted);font-size:.8rem}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  input[type=text],input[type=tel]{padding:.5rem .7rem;border:1px solid var(--line);border-radius:9px;font:inherit;background:#fff}
+  .note{background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;padding:10px 14px;font-size:.84rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <b>NURZING</b>
+  <a href="/admin" class="{{ 'on' if page=='dashboard' }}">Dashboard</a>
+  <a href="/admin/bookings" class="{{ 'on' if page=='bookings' }}">Bookings</a>
+  <a href="/admin/professionals" class="{{ 'on' if page=='professionals' }}">Professionals</a>
+  <a href="/admin/applications" class="{{ 'on' if page=='applications' }}">Applications</a>
+  <a href="/admin/ledger" class="{{ 'on' if page=='ledger' }}">Ledger</a>
+  <a href="/admin/audit" class="{{ 'on' if page=='audit' }}">Audit</a>
+  <a href="/docs">API docs</a>
+</header>
+<main>
+{% block body %}{% endblock %}
+</main>
+</body>
+</html>
