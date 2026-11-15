@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Bookings — NURZING</title>
+<link rel="icon" href="/favicon.svg" />
+<style>
+  :root{--ink:#0A1615;--muted:#5E6B68;--line:rgba(10,64,60,.14);--teal:#073331;--gold:#C69C42;--bg:#FBF8F1}
+  *{box-sizing:border-box}
+  body{margin:0;font:15px/1.5 Inter,system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--bg)}
+  header{background:var(--teal);color:#F5EFE3;padding:14px 20px;display:flex;gap:16px;align-items:center}
+  header b{font-family:Georgia,serif;letter-spacing:.14em}
+  main{max-width:1150px;margin:0 auto;padding:24px 16px 60px}
+  h1{font-family:Georgia,serif;font-size:1.5rem;margin:.2rem 0 1rem}
+  .bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+  input,select{padding:.55rem .7rem;border:1px solid var(--line);border-radius:9px;font:inherit;background:#fff}
+  button{border:1px solid var(--line);background:#fff;border-radius:9px;padding:.5rem .8rem;font:inherit;cursor:pointer}
+  button.gold{background:linear-gradient(135deg,#EBD69B,#C69C42);border-color:#C69C42;font-weight:700}
+  table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);font-size:.84rem;vertical-align:top}
+  th{background:rgba(10,64,60,.05);font-size:.74rem;text-transform:uppercase;letter-spacing:.04em}
+  tr:last-child td{border-bottom:0}
+  .muted{color:var(--muted);font-size:.8rem}
+  .pill{display:inline-block;padding:.12rem .5rem;border-radius:999px;font-size:.72rem;font-weight:700;background:rgba(10,64,60,.08)}
+  .empty{padding:26px;text-align:center;color:var(--muted)}
+  a.wa{color:#0E524C;font-weight:600}
+</style>
+</head>
+<body>
+<header><b>NURZING</b><span class="muted" style="color:#EBD69B">Care requests</span></header>
+<main>
+  <h1>Bookings</h1>
+  <div class="bar">
+    <input id="key" type="password" placeholder="Admin key" autocomplete="off" style="min-width:220px" />
+    <button class="gold" id="load">Load</button>
+    <select id="status">
+      <option value="">All statuses</option>
+      <option value="new">new</option>
+      <option value="contacted">contacted</option>
+      <option value="confirmed">confirmed</option>
+      <option value="completed">completed</option>
+      <option value="cancelled">cancelled</option>
+    </select>
+    <span class="muted" id="info"></span>
+  </div>
+  <div id="out" class="empty">Enter the admin key and press Load.</div>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+$('key').value = sessionStorage.getItem('nz-admin-key') || '';
+
+async function load() {
+  const key = $('key').value.trim();
+  const st = $('status').value;
+  if (!key) { $('info').textContent = 'Key required'; return; }
+  sessionStorage.setItem('nz-admin-key', key);
+  $('info').textContent = 'Loading…';
+  try {
+    const url = '/api/bookings?key=' + encodeURIComponent(key) + (st ? '&status=' + encodeURIComponent(st) : '');
+    const res = await fetch(url);
+    const data = await res.json();
+    if (!res.ok || !data.ok) { $('info').textContent = data.error || ('HTTP ' + res.status); return; }
+    render(data.bookings);
+    $('info').textContent = data.count + ' booking(s)';
+  } catch (e) {
+    $('info').textContent = 'Network error';
+  }
+}
+
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+function render(rows) {
+  const out = $('out');
+  if (!rows.length) { out.className = 'empty'; out.textContent = 'No bookings yet.'; return; }
+  out.className = '';
+  out.innerHTML = '<table><thead><tr><th>Ref</th><th>When</th><th>Care</th><th>Where</th><th>Phone</th><th>Estimate</th><th>Status</th><th>Update</th></tr></thead><tbody>' +
+    rows.map(r => `<tr>
+      <td>${esc(r.reference)}</td>
+      <td class="muted">${esc(r.created_at)}</td>
+      <td>${esc(r.care_type)}<br /><span class="muted">${esc(r.shift)} · ${esc(r.days)}d</span></td>
+      <td>${esc([r.area, r.city].filter(Boolean).join(', '))}<br /><span class="muted">${esc(r.notes || '')}</span></td>
+      <td><a class="wa" href="https://wa.me/${esc(String(r.phone).replace(/\\D/g,''))}" target="_blank" rel="noopener">${esc(r.phone)}</a></td>
+      <td class="muted">${r.estimate_low ? '₹' + r.estimate_low + '–' + r.estimate_high : '—'}</td>
+      <td><span class="pill">${esc(r.status)}</span></td>
+      <td><select data-id="${r.id}" class="st">
+        ${['new','contacted','confirmed','completed','cancelled'].map(s => `<option ${s === r.status ? 'selected' : ''}>${s}</option>`).join('')}
+      </select></td>
+    </tr>`).join('') + '</tbody></table>';
+
+  out.querySelectorAll('select.st').forEach(sel => {
+    sel.addEventListener('change', async () => {
+      const key = $('key').value.trim();
+      const res = await fetch('/api/bookings?key=' + encodeURIComponent(key), {
+        method: 'PUT', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ id: Number(sel.dataset.id), status: sel.value }),
+      });
+      if (!res.ok) { alert('Could not update'); }
+    });
+  });
+}
+
+$('load').addEventListener('click', load);
+$('status').addEventListener('change', load);
+$('key').addEventListener('keydown', (e) => { if (e.key === 'Enter') load(); });
+if ($('key').value) load();
+</script>
+</body>
+</html>
