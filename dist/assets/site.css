@@ -518,3 +518,11 @@ html{scroll-behavior:smooth}
 .fcontact a.line{color:var(--teal-200);text-decoration:none;transition:color .25s}
 .fcontact a.line:hover{color:var(--gold-300)}
 .fcontact a.line svg{color:var(--gold-400)}
+
+/* booking result */
+.success-box{margin-top:16px;display:flex;flex-direction:column;gap:12px;align-items:center}
+.ref-line{font-size:.9rem;color:var(--muted)}
+.ref-line b{color:var(--teal-900);letter-spacing:.08em}
+.wa-btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+
+.tel-line{font-size:.84rem;color:var(--muted);text-decoration:none;border-bottom:1px dotted currentColor}
