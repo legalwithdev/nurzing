@@ -9,14 +9,19 @@ from __future__ import annotations
 import argparse
 import time
 
+from . import jobs, scheduler
 from .db import SessionLocal, init_db
 from .notifications import drain
+from . import tasks  # noqa: F401  (registers jobs)
 
 
 def run_once(limit: int = 100) -> dict:
     init_db()
     with SessionLocal() as db:
-        return drain(db, limit=limit)
+        released = scheduler.release_due(db, limit=limit)
+        drained = drain(db, limit=limit)
+        ran = jobs.drain(db, limit=20)
+        return {"released": released, "drained": drained, "jobs": ran}
 
 
 def main() -> None:
