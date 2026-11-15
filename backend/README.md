@@ -107,5 +107,7 @@ The backend cannot run on Cloudflare Pages (that host is static-only). Pick a Py
 5. **Migrations** — Alembic is wired up:
    ```bash
    alembic upgrade head          # apply
+   alembic revision --autogenerate -m "change"
+  
 
 <!-- truncated for probe -->
