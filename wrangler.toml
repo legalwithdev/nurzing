@@ -2,9 +2,7 @@ name = "nurzing"
 compatibility_date = "2024-10-01"
 pages_build_output_dir = "dist"
 
-# D1 (free tier). Create it once, then paste the id here:
-#   npx wrangler d1 create nurzing
-#   npx wrangler d1 execute nurzing --file=db/schema.sql --remote
-# For the live site also add the binding in the dashboard:
-#   Workers & Pages -> nurzing -> Settings -> Functions -> D1 database bindings
-#   variable name: DB
+[[d1_databases]]
+binding = "DB"
+database_name = "nurzing"
+database_id = "cc787b01-f8f8-4b89-8be2-061af8b38fd5"
