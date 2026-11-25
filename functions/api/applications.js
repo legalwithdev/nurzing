@@ -109,6 +109,23 @@ async function putImpl({ request, env }) {
   const id = parseInt(body.id, 10);
   if (!id) return bad('id is required');
 
+  if (body.action === 'hide') {
+    await env.DB.prepare(
+      `UPDATE applications SET status='hidden', verified_at=NULL, verified_by=NULL,
+         rejected_note=? WHERE id=?`
+    ).bind(clean(body.note, 300) || 'hidden by admin', id).run();
+    return json({ ok: true, id, status: 'hidden' });
+  }
+
+  if (body.action === 'unhide') {
+    // Back to a plain digital profile. If they were verified before, the five
+    // checks have to be done again — we do not restore a badge we cannot stand behind.
+    await env.DB.prepare(
+      `UPDATE applications SET status='profile', rejected_note=NULL WHERE id=?`
+    ).bind(id).run();
+    return json({ ok: true, id, status: 'profile' });
+  }
+
   if (body.action === 'reject') {
     await env.DB.prepare(
       `UPDATE applications SET status='rejected', rejected_note=?, verified_at=NULL, verified_by=?
