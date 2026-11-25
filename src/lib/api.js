@@ -54,6 +54,7 @@ export function toLocalShape(p) {
     distanceKm: p.distance_km,
     careTypes: p.care_types || [],
     languages: p.languages || [],
+    shifts: p.shifts || [],
     about: p.about || '',
     skills: p.care_types || [],
     profileOnly: !!p.profile_only,
