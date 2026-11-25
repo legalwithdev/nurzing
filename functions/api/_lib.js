@@ -38,5 +38,6 @@ export const ipOf = (request) =>
 export function whatsappLink(number, lines) {
   const n = digits(number).replace(/^\+/, '');
   const text = encodeURIComponent(lines.filter(Boolean).join('\n'));
-  return n ? `https://wa.me/${n} : '';
+  if (!n) return '';
+  return 'https://wa.me/' + n + '?text=' + text;
 }
