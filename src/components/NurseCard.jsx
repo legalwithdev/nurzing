@@ -51,6 +51,11 @@ export default function NurseCard({ nurse }) {
       </Link>
 
       <div className="nc-badges">
+        {!nurse.apiId && (
+          <span className="pill" style={{ background: '#EFE7D6', color: '#7A6A45', fontWeight: 700 }}>
+            Sample profile
+          </span>
+        )}
         {isGold(nurse) && (
           <span className="gold-badge" title="B.Sc Nursing + RN&RM + experience + specialisation">&#9733; NURZING GOLD</span>
         )}
