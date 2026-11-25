@@ -15,7 +15,7 @@ const ORIGINS = [
 function corsHeaders(request) {
   const origin = request.headers.get('origin') || '';
   const h = {
-    'access-control-allow-methods': 'GET, POST, PUT, OPTIONS',
+    'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
     'access-control-allow-headers': 'content-type',
     'access-control-max-age': '86400',
     vary: 'origin',
