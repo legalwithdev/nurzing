@@ -51,3 +51,15 @@ CREATE TABLE IF NOT EXISTS applications (
 );
 CREATE INDEX IF NOT EXISTS idx_apps_created ON applications(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_apps_status  ON applications(status);
+
+-- A receipt for every permanent deletion. The profile data is gone; this keeps
+-- a record that it existed and was removed, so we can answer "what happened?".
+CREATE TABLE IF NOT EXISTS deleted_profiles (
+  id            INTEGER PRIMARY KEY AUTOINCREMENT,
+  reference     TEXT,
+  name          TEXT,
+  designation   TEXT,
+  status_before TEXT,
+  reason        TEXT,
+  deleted_at    TEXT NOT NULL DEFAULT (datetime('now'))
+);
