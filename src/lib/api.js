@@ -56,6 +56,10 @@ export function toLocalShape(p) {
     languages: p.languages || [],
     about: p.about || '',
     skills: p.care_types || [],
+    profileOnly: !!p.profile_only,
+    gender: p.gender || '',
+    photo: p.photo_url || '',
+    checks: p.checks || null,
     verified: { id: false, police: false, insured: false, vaccinated: false },
   };
   cache.set(mapped.id, mapped);
