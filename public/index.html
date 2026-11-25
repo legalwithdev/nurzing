@@ -539,6 +539,7 @@ syncShell();
     var chips = n.ct.map(function(c){return '<span class="c">'+esc(c)+'</span>';}).join('');
     return '<article class="slide"><div class="ncard">'
       + '<div class="ncard-top">'
+        + (!n.id ? '<span class="pill pill-warn">Sample profile</span>' : '')
         + (n.gold ? '<span class="pill ncard-gold" title="B.Sc Nursing + RN&RM + experience + specialisation">\u2605 NURZING GOLD</span>' : '')
         + (first ? '<span class="pill pill-gold">Best match</span>' : '')
         + (n.profileOnly
