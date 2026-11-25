@@ -1,6 +1,6 @@
 // POST /api/bookings  -> store a care request in D1
 // GET  /api/bookings?key=...  -> admin list
-import { json, bad, clean, digits, reference, throttled, ipOf, whatsappLink } from './_lib.js';
+import { json, bad, clean, digits, reference, throttled, ipOf, whatsappLink } from '../_lib.js';
 
 const CARE = new Set([
   'Home Nursing', 'Live-in Nursing (24x7)', 'Elderly Care & Attendants',
