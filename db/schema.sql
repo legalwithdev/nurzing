@@ -34,6 +34,19 @@ CREATE TABLE IF NOT EXISTS applications (
   care_types     TEXT,
   notes          TEXT,
   status         TEXT NOT NULL DEFAULT 'new',
+
+  -- verification checklist: every item must pass before a profile goes live
+  docs_ok        INTEGER NOT NULL DEFAULT 0,   -- name, photo, documents received online
+  council_ok     INTEGER NOT NULL DEFAULT 0,   -- nursing council registration checked offline
+  education_ok   INTEGER NOT NULL DEFAULT 0,   -- qualification certificates checked offline
+  pcc_ok         INTEGER NOT NULL DEFAULT 0,   -- police clearance certificate (PCC)
+  physical_ok    INTEGER NOT NULL DEFAULT 0,   -- in-person / live verification done
+  photo_url      TEXT,
+  verified_at    TEXT,
+  verified_by    TEXT,
+  rejected_note  TEXT,
+
   created_at     TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX IF NOT EXISTS idx_apps_created ON applications(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_apps_status  ON applications(status);
