@@ -6,7 +6,7 @@
 //   2 = RN&RM / RANM
 //   3 = other licensed profession (physio, etc.)
 //   4 = non-medical support (attendant, ward boy, GDA)
-import { json, bad } from './_lib.js';
+import { json, bad } from '../_lib.js';
 
 const SUPPORT = ['attendant', 'ward boy', 'wardboy', 'caregiver', 'nursing assistant', 'gda', 'ayah', 'helper'];
 const LICENSED_OTHER = ['physiotherap', 'occupational therap', 'dietitian', 'nutritionist'];
