@@ -39,11 +39,12 @@ export async function onRequestGet({ env }) {
 
   const { results } = await env.DB.prepare(
     `SELECT id, name, designation, qualification, reg_type, reg_number, years, city, area,
-            care_types, notes, verified_at
+            care_types, notes, verified_at, photo_url, gender, status,
+            docs_ok, council_ok, education_ok, pcc_ok, physical_ok
        FROM applications
-      WHERE status = 'verified'
-      ORDER BY years DESC, id DESC
-      LIMIT 100`
+      WHERE status IN ('verified', 'profile')
+      ORDER BY (status = 'verified') DESC, years DESC, id DESC
+      LIMIT 200`
   ).all();
 
   const items = (results || []).map((r) => {
@@ -55,7 +56,17 @@ export async function onRequestGet({ env }) {
       designation: r.designation,
       qualification: r.qualification || '',
       reg_type: r.reg_type,
-      reg_verified: true,
+      reg_verified: r.status === 'verified',
+      profile_only: r.status === 'profile',
+      gender: r.gender || '',
+      photo_url: r.photo_url || null,
+      checks: r.status === 'verified' ? {
+        documents: !!r.docs_ok,
+        council: !!r.council_ok,
+        qualification: !!r.education_ok,
+        pcc: !!r.pcc_ok,
+        physical: !!r.physical_ok,
+      } : null,
       reg_number: r.reg_number || null,
       years: r.years || 0,
       city: r.city || '',
