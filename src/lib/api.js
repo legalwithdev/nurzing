@@ -73,7 +73,7 @@ export const api = {
   },
   professional: (id) => req(`/api/professionals/${id}`),
   quote: (payload) => req('/api/bookings/quote', { method: 'POST', body: payload }),
-  createBooking: (payload) => req('/api/bookings', { method: 'POST', body: payload, auth: true }),
+  createBooking: (payload) => req('/api/bookings', { method: 'POST', body: payload }),
   myBookings: () => req('/api/bookings', { auth: true }),
   requestOtp: (phone) => req('/api/auth/request-otp', { method: 'POST', body: { phone } }),
   verifyOtp: (phone, code) => req('/api/auth/verify-otp', { method: 'POST', body: { phone, code } }),
