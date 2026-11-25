@@ -3,10 +3,41 @@
 // PUT  /api/applications?key=...    -> admin sets the verification checklist
 import { json, bad, clean, digits, reference, throttled, ipOf } from './_lib.js';
 
+// The staff and admin apps live on their own subdomains, so the browser makes a
+// cross-origin request. Without these headers the admin console only shows
+// "Could not reach the server".
+const ORIGINS = [
+  'https://nurzing.pages.dev',
+  'https://nurzingstaff.pages.dev',
+  'https://nurzingadmin.pages.dev',
+];
+
+function corsHeaders(request) {
+  const origin = request.headers.get('origin') || '';
+  const h = {
+    'access-control-allow-methods': 'GET, POST, PUT, OPTIONS',
+    'access-control-allow-headers': 'content-type',
+    'access-control-max-age': '86400',
+    vary: 'origin',
+  };
+  if (ORIGINS.includes(origin)) h['access-control-allow-origin'] = origin;
+  return h;
+}
+
+function withCors(res, request) {
+  const h = new Headers(res.headers);
+  for (const [k, v] of Object.entries(corsHeaders(request))) h.set(k, v);
+  return new Response(res.body, { status: res.status, headers: h });
+}
+
+export function onRequestOptions({ request }) {
+  return new Response(null, { status: 204, headers: corsHeaders(request) });
+}
+
 const REG_TYPES = new Set(['RN&RM', 'RANM', 'none']);
 const CHECKS = ['docs_ok', 'council_ok', 'education_ok', 'pcc_ok', 'physical_ok'];
 
-export async function onRequestPost({ request, env }) {
+async function postImpl({ request, env }) {
   let body;
   try { body = await request.json(); } catch { return bad('Invalid JSON body'); }
   if (body.company) return bad('Rejected');
@@ -42,7 +73,7 @@ export async function onRequestPost({ request, env }) {
   return json({ ok: true, reference: ref, stored: true });
 }
 
-export async function onRequestGet({ request, env }) {
+async function getImpl({ request, env }) {
   const url = new URL(request.url);
   if (!env.ADMIN_KEY || (url.searchParams.get('key') || '') !== env.ADMIN_KEY) return bad('Not authorised', 401);
   if (!env.DB) return bad('Storage is not configured', 503);
@@ -57,7 +88,7 @@ export async function onRequestGet({ request, env }) {
 
 // The admin sets the checklist. Status is DERIVED from it — an admin cannot
 // simply mark someone verified; every mandatory check has to pass first.
-export async function onRequestPut({ request, env }) {
+async function putImpl({ request, env }) {
   const url = new URL(request.url);
   if (!env.ADMIN_KEY || (url.searchParams.get('key') || '') !== env.ADMIN_KEY) return bad('Not authorised', 401);
   if (!env.DB) return bad('Storage is not configured', 503);
@@ -91,3 +122,9 @@ export async function onRequestPut({ request, env }) {
 
   return json({ ok: true, id, status, checks: Object.fromEntries(CHECKS.map((c, i) => [c, vals[i]])) });
 }
+
+
+// ---- CORS-wrapped exports ----
+export const onRequestPost = async (ctx) => withCors(await postImpl(ctx), ctx.request);
+export const onRequestGet  = async (ctx) => withCors(await getImpl(ctx), ctx.request);
+export const onRequestPut  = async (ctx) => withCors(await putImpl(ctx), ctx.request);
