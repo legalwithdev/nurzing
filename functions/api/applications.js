@@ -1,7 +1,7 @@
 // POST /api/applications            -> a professional lists themselves (public)
 // GET  /api/applications?key=...    -> admin list
 // PUT  /api/applications?key=...    -> admin sets the verification checklist
-import { json, bad, clean, digits, reference, throttled, ipOf } from './_lib.js';
+import { json, bad, clean, digits, reference, throttled, ipOf, img } from './_lib.js';
 
 // The staff and admin apps live on their own subdomains, so the browser makes a
 // cross-origin request. Without these headers the admin console only shows
@@ -66,13 +66,14 @@ async function postImpl({ request, env }) {
     await env.DB.prepare(
       `INSERT INTO applications (reference, name, phone, designation, qualification, reg_type,
                                  reg_number, years, city, area, care_types, notes,
-                                 wants_verification, status)
-       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+                                 wants_verification, status, gender, photo_url, photo_thumb)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
     ).bind(ref, name, phone, designation, clean(body.qualification, 60), regType,
            clean(body.reg_number, 40), Math.min(60, Math.max(0, parseInt(body.years, 10) || 0)),
            clean(body.city, 80), clean(body.area, 80),
            JSON.stringify(Array.isArray(body.care_types) ? body.care_types.slice(0, 8) : []),
-           clean(body.notes, 500), wants, status).run();
+           clean(body.notes, 500), wants, status, clean(body.gender, 20),
+           img(body.photo_url, 47000), img(body.photo_thumb, 12000)).run();
   } catch {
     return json({ ok: true, reference: ref, stored: false,
       note: 'We could not save it just now — please message us on WhatsApp.' });
