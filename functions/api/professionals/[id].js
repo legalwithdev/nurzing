@@ -9,7 +9,7 @@ export async function onRequestGet({ params, env }) {
   const { results } = await env.DB.prepare(
     `SELECT id, name, designation, qualification, years, city, area, care_types, notes,
             photo_url, verified_at, gender, status,
-            docs_ok, council_ok, education_ok, pcc_ok, physical_ok
+            docs_ok, council_ok, education_ok, pcc_ok, physical_ok, languages, shifts
        FROM applications
       WHERE id = ? AND status IN ('verified', 'profile')
       LIMIT 1`
