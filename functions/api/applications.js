@@ -1,7 +1,10 @@
-// POST /api/applications -> a professional lists themselves
+// POST /api/applications            -> a professional lists themselves (public)
+// GET  /api/applications?key=...    -> admin list
+// PUT  /api/applications?key=...    -> admin sets the verification checklist
 import { json, bad, clean, digits, reference, throttled, ipOf } from './_lib.js';
 
 const REG_TYPES = new Set(['RN&RM', 'RANM', 'none']);
+const CHECKS = ['docs_ok', 'council_ok', 'education_ok', 'pcc_ok', 'physical_ok'];
 
 export async function onRequestPost({ request, env }) {
   let body;
@@ -43,6 +46,48 @@ export async function onRequestGet({ request, env }) {
   const url = new URL(request.url);
   if (!env.ADMIN_KEY || (url.searchParams.get('key') || '') !== env.ADMIN_KEY) return bad('Not authorised', 401);
   if (!env.DB) return bad('Storage is not configured', 503);
-  const { results } = await env.DB.prepare('SELECT * FROM applications ORDER BY id DESC LIMIT 200').all();
+
+  const status = url.searchParams.get('status');
+  const stmt = status
+    ? env.DB.prepare('SELECT * FROM applications WHERE status = ? ORDER BY id DESC LIMIT 200').bind(status)
+    : env.DB.prepare('SELECT * FROM applications ORDER BY id DESC LIMIT 200');
+  const { results } = await stmt.all();
   return json({ ok: true, count: results.length, applications: results });
+}
+
+// The admin sets the checklist. Status is DERIVED from it — an admin cannot
+// simply mark someone verified; every mandatory check has to pass first.
+export async function onRequestPut({ request, env }) {
+  const url = new URL(request.url);
+  if (!env.ADMIN_KEY || (url.searchParams.get('key') || '') !== env.ADMIN_KEY) return bad('Not authorised', 401);
+  if (!env.DB) return bad('Storage is not configured', 503);
+
+  let body;
+  try { body = await request.json(); } catch { return bad('Invalid JSON body'); }
+
+  const id = parseInt(body.id, 10);
+  if (!id) return bad('id is required');
+
+  if (body.action === 'reject') {
+    await env.DB.prepare(
+      `UPDATE applications SET status='rejected', rejected_note=?, verified_at=NULL, verified_by=?
+       WHERE id=?`
+    ).bind(clean(body.note, 300), 'admin', id).run();
+    return json({ ok: true, id, status: 'rejected' });
+  }
+
+  const checks = body.checks || {};
+  const vals = CHECKS.map((c) => (checks[c] ? 1 : 0));
+  const allPassed = vals.every((v) => v === 1);
+  const status = allPassed ? 'verified' : 'pending';
+
+  await env.DB.prepare(
+    `UPDATE applications SET docs_ok=?, council_ok=?, education_ok=?, pcc_ok=?, physical_ok=?,
+       status=?, verified_at=CASE WHEN ?='verified' THEN datetime('now') ELSE NULL END,
+       verified_by=CASE WHEN ?='verified' THEN 'admin' ELSE NULL END,
+       rejected_note=NULL
+     WHERE id=?`
+  ).bind(...vals, status, status, status, id).run();
+
+  return json({ ok: true, id, status, checks: Object.fromEntries(CHECKS.map((c, i) => [c, vals[i]])) });
 }
