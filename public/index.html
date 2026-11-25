@@ -553,6 +553,8 @@ syncShell();
         + '<div class="ncard-role">'+esc(n.r)+' \u00b7 '+n.y+' yrs experience</div>'
         + '<div class="ncard-stars">'+stars(n.rt)+' <b>'+n.rt.toFixed(1)+'</b> <span>\u00b7 '+n.rev+' visits</span></div>'
         + '<div class="ncard-chips">'+chips+'</div>'
+        + ((n.langs && n.langs.length) ? '<div class="ncard-chips">'+n.langs.map(function(c){return '<span class="c">'+esc(c)+'</span>';}).join('')+'</div>' : '')
+        + ((n.shifts && n.shifts.length) ? '<div class="ncard-chips">'+n.shifts.map(function(c){return '<span class="c">'+esc(c)+'</span>';}).join('')+'</div>' : '')
         + '<div class="ncard-loc">\u25c9 '+esc(n.a)+', '+esc(n.c)+' \u00b7 '+n.km+' km away</div>'
         + regRow(n)
       + '</div>'
@@ -595,6 +597,8 @@ syncShell();
           av: false,
           km: 0,
           ct: (p.care_types || []).slice(0, 3),
+          langs: p.languages || [],
+          shifts: p.shifts || [],
           profileOnly: !!p.profile_only,
           photo: p.photo_url || '',
           gender: p.gender || ''
