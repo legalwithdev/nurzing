@@ -55,6 +55,7 @@ var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('cont
   padding:.42rem .7rem;border-radius:999px}
 .pill-gold{background:linear-gradient(135deg,var(--gold-300),var(--gold-500));color:var(--teal-1000)}
 .pill-teal{background:rgba(10,64,60,.07);color:var(--teal-800);border:1px solid var(--line)}
+.pill-warn{background:#F7E9D2;color:#8A4B12;border:1px solid #E4C9A6}
 .ncard-photo{margin:14px 18px 0;height:148px;border-radius:20px;position:relative;overflow:hidden;
   background:linear-gradient(150deg,var(--teal-800),var(--teal-1000))}
 .ncard-photo .init{position:absolute;inset:0;display:grid;place-items:center;
@@ -540,9 +541,13 @@ syncShell();
       + '<div class="ncard-top">'
         + (n.gold ? '<span class="pill ncard-gold" title="B.Sc Nursing + RN&RM + experience + specialisation">\u2605 NURZING GOLD</span>' : '')
         + (first ? '<span class="pill pill-gold">Best match</span>' : '')
-        + (n.av ? '<span class="pill pill-teal">Available today</span>' : '<span class="pill pill-teal">Book ahead</span>')
+        + (n.profileOnly
+            ? '<span class="pill pill-warn">Profile only &middot; not verified for work</span>'
+            : (n.av ? '<span class="pill pill-teal">Available today</span>' : '<span class="pill pill-teal">Book ahead</span>'))
+        + (n.gender ? '<span class="pill pill-teal">'+esc(n.gender)+'</span>' : '')
       + '</div>'
-      + '<div class="ncard-photo"><span class="init">'+esc(init)+'</span><span class="badge">'+esc(n.r)+'</span></div>'
+      + '<div class="ncard-photo"'+(n.photo?' style="background-image:url('+n.photo+');background-size:cover;background-position:center"':'')+'>'
+        + '<span class="init"'+(n.photo?' style="display:none"':'')+'>'+esc(init)+'</span><span class="badge">'+esc(n.r)+'</span></div>'
       + '<div class="ncard-body">'
         + '<h3 class="ncard-name">'+esc(n.n)+'</h3>'
         + '<div class="ncard-role">'+esc(n.r)+' \u00b7 '+n.y+' yrs experience</div>'
@@ -552,14 +557,55 @@ syncShell();
         + regRow(n)
       + '</div>'
       + '<div class="ncard-foot">'
-        + '<div class="price">\u20b9'+n.rate.toLocaleString('en-IN')+' <small>/day</small></div>'
+        + (n.profileOnly
+            ? '<div class="price" style="font-size:.9rem">Not bookable until verified</div>'
+            : '<div class="price">'+(n.rate ? '\u20b9'+n.rate.toLocaleString('en-IN')+' <small>/day</small>' : 'Price on request')+'</div>')
         + '<div class="acts"><button class="ncard-save" type="button" aria-label="Save nurse">\u2661</button>'
-        + '<a class="btn btn-gold ncard-book" href="/book.html?n='+encodeURIComponent(n.n)+'&r='+encodeURIComponent(n.r)+'&c='+encodeURIComponent(n.ct[0]||'')+'">Book \u2192</a></div>'
+        + (n.profileOnly
+            ? '<a class="btn btn-ghost ncard-book" href="/app/">View profile</a>'
+            : '<a class="btn btn-gold ncard-book" href="/book.html?n='+encodeURIComponent(n.n)+'&r='+encodeURIComponent(n.r)+'&c='+encodeURIComponent(n.ct[0]||'')+'">Book \u2192</a>')
+        + '</div>'
       + '</div>'
     + '</div></article>';
   }
   function addCycle(){var h='';for(var i=0;i<NURSES.length;i++)h+=card(NURSES[i],i===0);feed.insertAdjacentHTML('beforeend',h);cycles++;}
   addCycle(); addCycle();
+
+  // ---- live records from /api/professionals ----
+  // Verified professionals first, then digital profiles. If the API has nothing we
+  // keep the sample cards above so the page is never empty.
+  fetch('/api/professionals')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if (!d || !d.ok || !Array.isArray(d.items) || !d.items.length) return;
+      var live = d.items.map(function(p){
+        return {
+          n: p.name,
+          r: p.designation,
+          ql: p.qualification || '',
+          regt: p.reg_type,
+          regv: !!p.reg_verified,
+          gold: !!p.gold,
+          c: p.city || '',
+          a: p.area || '',
+          rate: 0,
+          rt: p.rating || 0,
+          rev: p.reviews_count || 0,
+          y: p.years || 0,
+          av: false,
+          km: 0,
+          ct: (p.care_types || []).slice(0, 3),
+          profileOnly: !!p.profile_only,
+          photo: p.photo_url || '',
+          gender: p.gender || ''
+        };
+      });
+      // verified first, then digital profiles
+      live.sort(function(a, b){ return (a.profileOnly ? 1 : 0) - (b.profileOnly ? 1 : 0); });
+      feed.innerHTML = '';
+      for (var i = 0; i < live.length; i++) feed.insertAdjacentHTML('beforeend', card(live[i], i === 0));
+    })
+    .catch(function(){ /* keep the sample cards */ });
   var ticking=false;
   feed.addEventListener('scroll',function(){
     if(ticking) return; ticking=true;
