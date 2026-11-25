@@ -57,20 +57,29 @@ async function postImpl({ request, env }) {
     note: 'Storage is not configured yet — please message us on WhatsApp.' });
 
   try {
+    // Anyone can create a profile. Asking for verification is a separate choice:
+    //   wants_verification = 1 -> status 'pending'  (queued for the offline check)
+    //   wants_verification = 0 -> status 'profile'  (digital profile only for now)
+    const wants = body.wants_verification ? 1 : 0;
+    const status = wants ? 'pending' : 'profile';
+
     await env.DB.prepare(
       `INSERT INTO applications (reference, name, phone, designation, qualification, reg_type,
-                                 reg_number, years, city, area, care_types, notes)
-       VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`
+                                 reg_number, years, city, area, care_types, notes,
+                                 wants_verification, status)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
     ).bind(ref, name, phone, designation, clean(body.qualification, 60), regType,
            clean(body.reg_number, 40), Math.min(60, Math.max(0, parseInt(body.years, 10) || 0)),
            clean(body.city, 80), clean(body.area, 80),
            JSON.stringify(Array.isArray(body.care_types) ? body.care_types.slice(0, 8) : []),
-           clean(body.notes, 500)).run();
+           clean(body.notes, 500), wants, status).run();
   } catch {
     return json({ ok: true, reference: ref, stored: false,
       note: 'We could not save it just now — please message us on WhatsApp.' });
   }
-  return json({ ok: true, reference: ref, stored: true });
+  return json({ ok: true, reference: ref, stored: true,
+    wants_verification: !!body.wants_verification,
+    status: body.wants_verification ? 'pending' : 'profile' });
 }
 
 async function getImpl({ request, env }) {
