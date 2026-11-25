@@ -1,5 +1,5 @@
-/* NURZING service worker — offline shell + fast repeat visits */
-const VERSION = 'nz-v1';
+/* NURZING service worker - offline shell + fast repeat visits */
+const VERSION = 'nz-v2';
 const PRECACHE = ['/', '/index.html', '/offline.html', '/assets/site.css', '/manifest.webmanifest',
   '/icons/icon-192.png', '/icons/icon-512.png'];
 
@@ -21,9 +21,12 @@ self.addEventListener('fetch', (e) => {
   const url = new URL(req.url);
   if (url.origin !== location.origin) return;
 
+  // NEVER cache the API. A profile that is deleted, hidden or verified must
+  // change on the next load, not whenever the cache decides to expire.
+  if (url.pathname.indexOf('/api/') === 0) return;
+
   const isHTML = req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html');
   if (isHTML) {
-    // network-first: always try for fresh HTML, fall back to cache, then offline page
     e.respondWith(
       fetch(req)
         .then((res) => { const copy = res.clone(); caches.open(VERSION).then((c) => c.put(req, copy)); return res; })
@@ -31,7 +34,6 @@ self.addEventListener('fetch', (e) => {
     );
     return;
   }
-  // cache-first for static assets
   e.respondWith(
     caches.match(req).then((m) => m || fetch(req).then((res) => {
       const copy = res.clone();
