@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS applications (
   verified_at    TEXT,
   verified_by    TEXT,
   rejected_note  TEXT,
+  wants_verification INTEGER NOT NULL DEFAULT 0,  -- 1 = asked to be verified for work
 
   created_at     TEXT NOT NULL DEFAULT (datetime('now'))
 );
