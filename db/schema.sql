@@ -46,6 +46,11 @@ CREATE TABLE IF NOT EXISTS applications (
   verified_by    TEXT,
   rejected_note  TEXT,
   wants_verification INTEGER NOT NULL DEFAULT 0,  -- 1 = asked to be verified for work
+  gender         TEXT,                            -- as the professional states it
+  photo_url      TEXT,                            -- full photo, already resized on the device
+  photo_thumb    TEXT,                            -- small copy for the list
+  languages      TEXT,                            -- JSON array
+  shifts         TEXT,                            -- JSON array
 
   created_at     TEXT NOT NULL DEFAULT (datetime('now'))
 );
