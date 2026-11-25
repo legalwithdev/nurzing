@@ -8,7 +8,3 @@ pages_build_output_dir = "dist"
 # For the live site also add the binding in the dashboard:
 #   Workers & Pages -> nurzing -> Settings -> Functions -> D1 database bindings
 #   variable name: DB
-[[d1_databases]]
-binding = "DB"
-database_name = "nurzing"
-database_id = "REPLACE_WITH_YOUR_D1_ID"
