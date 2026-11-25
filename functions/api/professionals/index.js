@@ -40,7 +40,7 @@ export async function onRequestGet({ env }) {
   const { results } = await env.DB.prepare(
     `SELECT id, name, designation, qualification, reg_type, reg_number, years, city, area,
             care_types, notes, verified_at, photo_url, gender, status,
-            docs_ok, council_ok, education_ok, pcc_ok, physical_ok
+            docs_ok, council_ok, education_ok, pcc_ok, physical_ok, languages, shifts
        FROM applications
       WHERE status IN ('verified', 'profile')
       ORDER BY (status = 'verified') DESC, years DESC, id DESC
@@ -73,6 +73,8 @@ export async function onRequestGet({ env }) {
       area: r.area || '',
       care_types: parseCares(r.care_types),
       about: r.notes || '',
+      languages: parseCares(r.languages),
+      shifts: parseCares(r.shifts),
       verified_at: r.verified_at,
       tier: t.tier,
       gold: !!t.gold,
