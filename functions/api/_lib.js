@@ -41,3 +41,13 @@ export function whatsappLink(number, lines) {
   if (!n) return '';
   return 'https://wa.me/' + n + '?text=' + text;
 }
+
+// A photo from the staff form. The phone already resized it, so all we do here
+// is refuse anything that is not a real image data URL or is over the size cap.
+export function img(value, maxChars = 47000) {
+  const s = String(value || '');
+  if (!s) return null;
+  if (!/^data:image\/(jpeg|png|webp);base64,/.test(s)) return null;
+  if (s.length > maxChars) return null;
+  return s;
+}
