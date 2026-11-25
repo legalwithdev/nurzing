@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-cd /scratch/work/nurzing-app
+cd "$(dirname "$0")"
 rm -rf dist && mkdir -p dist/assets
 ./node_modules/.bin/esbuild src/main.jsx --bundle --format=iife --jsx=automatic --minify \
   --define:process.env.NODE_ENV='"production"' --outfile=dist/assets/app.js --log-level=warning
