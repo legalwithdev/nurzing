@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { getCachedNurse } from '../lib/api.js';
+import { getCachedNurse, api } from '../lib/api.js';
 import { getNurse } from '../data/nurses.js';
 import { SHIFTS, quote, inr } from '../lib/pricing.js';
 import { useBookings } from '../lib/store.jsx';
@@ -29,13 +29,55 @@ export default function BookingFlow() {
   const q = quote(n, care, shift, days);
   const canNext = step === 1 ? !!care : step === 2 ? !!shift : (addr.trim().length > 4 && phone.trim().length >= 8);
 
-  function next() {
+  const CARE_MAP = {
+    'Home Nursing': 'Home Nursing',
+    'Live-in Nursing (24x7)': 'Live-in Nursing (24x7)',
+    'Elderly Care & Attendants': 'Elderly Care & Attendants',
+    'Post-Surgical Recovery': 'Post-Surgical Recovery',
+    'Mother & Baby Care': 'Mother & Baby Care',
+    'Physiotherapy at Home': 'Physiotherapy at Home',
+    'ICU-Trained Nurses': 'ICU-Trained Nurses',
+    'ICU-trained': 'ICU-Trained Nurses',
+    'Post-Surgical': 'Post-Surgical Recovery',
+    'Mother & Baby': 'Mother & Baby Care',
+    'Elderly Care': 'Elderly Care & Attendants',
+    'Attendant': 'Elderly Care & Attendants',
+  };
+
+  const [sending, setSending] = useState(false);
+
+  async function next() {
     if (step < 3) { setStep(step + 1); return; }
+
     const b = addBooking({
       nurseId: n.id, nurseName: n.name, careType: care, shiftId: shift, shiftLabel: q.shift.label,
       days: q.days, date, address: addr, patient, phone, notes, total: q.total, unit: q.unit,
     });
-    toast('Booking requested \u00B7 ' + b.id);
+
+    setSending(true);
+    let reference = null;
+    try {
+      const res = await api.createBooking({
+        care_type: CARE_MAP[care] || 'Home Nursing',
+        shift: q.shift.label,
+        days: q.days,
+        area: addr,
+        phone,
+        patient,
+        notes: (notes || '') + (date ? ' | start ' + date : ''),
+        professional: n.name,
+        estimate_low: q.total,
+        estimate_high: q.total,
+      });
+      reference = res && res.reference ? res.reference : null;
+    } catch (err) {
+      reference = null;
+    }
+    setSending(false);
+
+    toast(reference
+      ? 'Request sent \u00B7 ' + reference
+      : 'Saved on this device \u00B7 our team could not be reached');
     nav('/bookings');
   }
 
@@ -131,7 +173,7 @@ export default function BookingFlow() {
         <button className="btn btn-ghost" onClick={() => (step === 1 ? nav(`/nurse/${n.id}`) : setStep(step - 1))}>
           {step === 1 ? 'Cancel' : 'Back'}
         </button>
-        <button className="btn btn-gold btn-lg" disabled={!canNext} onClick={next}>
+        <button className="btn btn-gold btn-lg" disabled={!canNext || sending} onClick={next}>
           {step === 3 ? <><CheckIcon size={16} /> Confirm booking</> : 'Continue \u2192'}
         </button>
       </div>
