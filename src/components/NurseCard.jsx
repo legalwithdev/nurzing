@@ -49,6 +49,28 @@ export default function NurseCard({ nurse }) {
               : null}
         </div>
       )}
+      {!nurse.profileOnly && nurse.checks && (
+        <div className="nc-verified" style={{ marginTop: 8, padding: '10px 12px', background: 'rgba(29,122,79,.08)', border: '1px solid rgba(29,122,79,.25)', borderRadius: 10 }}>
+          <div style={{ fontSize: '.72rem', letterSpacing: '.08em', textTransform: 'uppercase', fontWeight: 700, color: '#1D7A4F', marginBottom: 6 }}>
+            Verified by NURZING
+          </div>
+          {[
+            ['documents', 'Government ID & documents'],
+            ['council', 'Nursing council registration'],
+            ['qualification', 'Qualification certificates'],
+            ['pcc', 'Police clearance (PCC)'],
+            ['physical', 'In-person physical verification'],
+          ].map(([k, label]) => (
+            <div key={k} style={{ display: 'flex', gap: 6, fontSize: '.82rem', lineHeight: 1.6, opacity: nurse.checks[k] ? 1 : 0.45 }}>
+              <span style={{ color: nurse.checks[k] ? '#1D7A4F' : '#9a9689', fontWeight: 700 }}>
+                {nurse.checks[k] ? '\u2713' : '\u2013'}
+              </span>
+              <span>{label}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
       <div className="nc-foot">
         <div className="price">[&#8377;0,000]<small> /day</small></div>
         <Link to={`/book/${nurse.id}`} className="btn btn-gold">Book <span aria-hidden="true">&rarr;</span></Link>
