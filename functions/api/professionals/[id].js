@@ -8,9 +8,10 @@ export async function onRequestGet({ params, env }) {
 
   const { results } = await env.DB.prepare(
     `SELECT id, name, designation, qualification, years, city, area, care_types, notes,
-            photo_url, verified_at
+            photo_url, verified_at, gender, status,
+            docs_ok, council_ok, education_ok, pcc_ok, physical_ok
        FROM applications
-      WHERE id = ? AND status = 'verified'
+      WHERE id = ? AND status IN ('verified', 'profile')
       LIMIT 1`
   ).bind(id).all();
 
@@ -41,8 +42,17 @@ export async function onRequestGet({ params, env }) {
       care_types: care,
       notes: row.notes || '',
       photo_url: row.photo_url || null,
-      verified: true,
+      gender: row.gender || '',
+      verified: row.status === 'verified',
+      profile_only: row.status !== 'verified',
       verified_at: row.verified_at || null,
+      checks: row.status === 'verified' ? {
+        documents: !!row.docs_ok,
+        council: !!row.council_ok,
+        qualification: !!row.education_ok,
+        pcc: !!row.pcc_ok,
+        physical: !!row.physical_ok,
+      } : null,
     },
   });
 }
