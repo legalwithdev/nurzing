@@ -3,7 +3,7 @@ import { NURSES, CITIES } from '../data/nurses.js';
 import { CARE_TYPES } from '../lib/pricing.js';
 import NurseCard from '../components/NurseCard.jsx';
 import { SearchIcon } from '../lib/icons.jsx';
-import { api, apiEnabled, toLocalShape } from '../lib/api.js';
+import { api, apiEnabled, toLocalShape, API_BASE } from '../lib/api.js';
 
 export default function Discover() {
   const [q, setQ] = useState('');
@@ -13,12 +13,23 @@ export default function Discover() {
   // live records from the Python backend when one is configured; otherwise demo data
   const [remote, setRemote] = useState(null);
   const [apiNote, setApiNote] = useState('');
+  // Live records come from /api/professionals, which returns ONLY professionals
+  // whose verification checklist is complete. If the API has nothing (or is not
+  // configured yet) we fall back to the sample profiles.
   useEffect(() => {
-    if (!apiEnabled()) return;
     let alive = true;
-    api.professionals({ limit: 100 })
-      .then((r) => { if (alive) { setRemote(r.items.map(toLocalShape)); setApiNote(''); } })
-      .catch((e) => { if (alive) { setRemote(null); setApiNote('Live data unavailable (' + e.message + ') — showing demo records.'); } });
+    fetch((API_BASE || '') + '/api/professionals')
+      .then((r) => r.json())
+      .then((d) => {
+        if (!alive) return;
+        if (d && d.ok && Array.isArray(d.items) && d.items.length) {
+          setRemote(d.items.map(toLocalShape));
+          setApiNote('');
+        } else {
+          setApiNote('No verified professionals listed yet — showing sample profiles.');
+        }
+      })
+      .catch(() => { if (alive) setApiNote(''); });
     return () => { alive = false; };
   }, []);
   const SOURCE = remote || NURSES;
