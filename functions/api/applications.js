@@ -151,7 +151,40 @@ async function putImpl({ request, env }) {
 }
 
 
+
+// DELETE /api/applications?id=..&key=..  -> permanently erase a profile.
+// Irreversible: the row is removed, not flagged. A receipt is kept in
+// deleted_profiles so we can still answer "what was removed and when".
+async function delImpl({ request, env }) {
+  const url = new URL(request.url);
+  if (!env.ADMIN_KEY || (url.searchParams.get('key') || '') !== env.ADMIN_KEY) return bad('Not authorised', 401);
+  if (!env.DB) return bad('Storage is not configured', 503);
+
+  const id = parseInt(url.searchParams.get('id'), 10);
+  if (!id) return bad('id is required');
+
+  const { results } = await env.DB.prepare(
+    'SELECT id, reference, name, designation, status FROM applications WHERE id = ?'
+  ).bind(id).all();
+  const found = results && results[0];
+  if (!found) return bad('Not found', 404);
+
+  try {
+    await env.DB.prepare(
+      `INSERT INTO deleted_profiles (reference, name, designation, status_before, reason)
+       VALUES (?,?,?,?,?)`
+    ).bind(found.reference || '', found.name || '', found.designation || '',
+           found.status || '', clean(url.searchParams.get('reason'), 200) || 'admin').run();
+  } catch (err) {
+    // never block the delete on the audit write
+  }
+
+  await env.DB.prepare('DELETE FROM applications WHERE id = ?').bind(id).run();
+  return json({ ok: true, id, reference: found.reference, name: found.name, deleted: true });
+}
+
 // ---- CORS-wrapped exports ----
 export const onRequestPost = async (ctx) => withCors(await postImpl(ctx), ctx.request);
 export const onRequestGet  = async (ctx) => withCors(await getImpl(ctx), ctx.request);
 export const onRequestPut  = async (ctx) => withCors(await putImpl(ctx), ctx.request);
+export const onRequestDelete = async (ctx) => withCors(await delImpl(ctx), ctx.request);
