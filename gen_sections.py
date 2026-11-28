@@ -41,11 +41,22 @@ src = io.open(os.path.join(PUB, 'index.html'), encoding='utf-8').read()
 SEC_SRC = io.open(os.path.join(HERE, 'sections_source.html'), encoding='utf-8').read()
 
 def between(a, b):
-    i = src.index(a); j = src.index(b)
+    i = src.find(a)
+    if i == -1: return ''
+    j = src.find(b, i)
+    if j == -1: return ''
     return src[i:j]
 
-BOOT = src[src.index('<script>(function(){try{var t=localStorage'):src.index('</script>', src.index('<script>(function(){try{var t=localStorage')) + 9]
-BANNER = between('<div class="demo-banner">', '</div>') + '</div>'
+# Both of these are optional: the theme boot script and the demo banner were
+# removed from the landing, so the build must not depend on them existing.
+_b = src.find('<script>(function(){try{var t=localStorage')
+BOOT = ''
+if _b != -1:
+    _e = src.find('</script>', _b)
+    if _e != -1: BOOT = src[_b:_e + 9]
+
+_banner = between('<div class="demo-banner">', '</div>')
+BANNER = (_banner + '</div>') if _banner else ''
 HEADER = between('<header id="hdr">', '</header>') + '</header>'
 FOOTER = between('<footer>', '</footer>') + '</footer>'
 
